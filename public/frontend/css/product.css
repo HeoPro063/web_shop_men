@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+.menu--title {
+    height: 40px;
+    background-color: #f8f8f8;
+}
+
+.link--product {
+    font-size: 15px;
+}
+
+.product__content {
+    padding: 0 132px;
+}
+
+.product__top {
+    height: 62px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top__title {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.chill-item {
+    width: 130px;
+    text-align: center;
+    padding: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.chill-item:hover {
+    border: 1px solid #ccc;
+}
+
+.sub-menu {
+    margin-top: 7px;
+    z-index: 1;
+    opacity: 0;
+    transition: ease .3s;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.menu-item {
+    width: 175px;
+    background: #eee;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    transition: ease .3s;
+}
+
+.menu-item:hover {
+    background: #fff;
+}
+
+.chill-item:hover .sub-menu {
+    margin-top: 3.3px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.guys {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 11px;
+    margin-bottom: 10px;
+}
+
+.form--title {
+    position: relative;
+    font-size: 15px;
+    font-weight: 700;
+    overflow: hidden;
+    color: #565353;
+    text-transform: uppercase;
+}
+
+.form--title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-bottom: 1px solid #000;
+}
+
+.form--search {
+    font-size: 13px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+}
+
+.search-product {
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.products-photo {
+    --width: 70px;
+    --height: 93px;
+}
+
+.img {
+    width: var(--width);
+    height: var(--height);
+    border: 4px solid #ccc;
+}
+
+.information-link {
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.information-link:hover {
+    color: #b31f2a !important;
+}
+.information-price{
+    color: #b31f2a;
+    font-family: 'Roboto', sans-serif;
+}

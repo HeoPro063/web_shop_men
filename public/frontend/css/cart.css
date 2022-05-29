@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+.content-cart {
+    padding-top: 112px;
+}
+
+.content-cart-detail {
+    padding: 20px 100px;
+}
+
+h1.form-title {
+    position: relative;
+    font-size: 21px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+}
+
+.form-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+
+.box-input {
+    height: 45px;
+    outline: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.note {
+    outline: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.cart-informations {
+    border-left: 1px solid #ccc;
+    height: 100%;
+    padding-left: 10px;
+}
+
+img.img-cart {
+    width: 69px;
+    height: 81px;
+}
+th.table-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+.table>:not(:first-child) {
+    border-top: 1px solid #ccc !important;
+}
+.product-links {
+    font-size: 13.5px;
+    text-decoration: none;
+    color: #b31f2a;
+    width: 300px;
+    display: block;
+    font-weight: 500;
+    transition: .3s;
+    overflow: hidden;
+}
+.product-links:hover {
+    color: #000;;
+}
+.text-products{
+    font-size: 13px;
+}
+.text-size{
+    font-size: 13px;
+}
+input.product-input-number {
+    width: 50px;
+}
+input.apart_from {
+    width: 27px;
+}
+input.add {
+    width: 27px;
+}
+button.btn-delete {
+    border: 1px solid #ccc;
+    width: 40px;
+    height: 25px;
+    background: #fff;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+.btn-home {
+    border: 1px solid #ccc;
+    width: 90px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    border-radius: 9px;
+}
+.btn-to{
+    transition: linear 0.3s;
+}
+.btn-to:hover{
+    color: #fff;
+    background-color: #000;
+}

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+.mockup-content{
+    width: 1113px !important;
+    height: 698px;
+    background-color: #fff;
+    z-index: 999;
+    transform: translate(10px, 0px);
+}
+/* .modal-body {
+    width: 71rem;
+    padding: 0;
+    padding-top: 9px;
+    margin: 0 auto;
+} */
+.modal-content{
+    border:none !important;
+    background: transparent !important;
+    width: 71rem;
+    padding: 0;
+    padding-top: 9px;
+    margin: 0 auto;
+}
+.carousel {
+    width: 428px;
+}
+.carousel-control-prev-icon {
+    width: 64px;
+    height: 81px;
+    font-size: 54px;
+    opacity: 1 !important;
+    color: #000 !important;
+    background-image: none !important;
+}
+.carousel-control-next-icon {
+    width: 64px;
+    height: 81px;
+    font-size: 54px;
+    opacity: 1 !important;
+    color: #000 !important;
+    background-image: none !important;
+}
+@media (min-width: 576px){
+    .modal-dialog {
+        max-width: 100% !important;
+        min-height: 100% !important;
+        margin: 0 auto;
+        position: relative;
+        z-index: 9999;
+    }
+}
+
+.carousel-img{
+    width: 425px;
+    height: 563px;
+}
+.carousel-indicators{
+    bottom: -122px;
+}
+.carousel-indicators [data-bs-target] {
+    width: 85px;
+    height: 107px;
+    border: none;
+    position: relative;
+   /*  top: 133px;
+    right: -50px; */
+    background: transparent;
+}
+.img-chill {
+    position: absolute;
+    left: 0;
+    width: 77px;
+}
+.mockup__title {
+    font-size: 19px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+
+}
+span.price__number {
+    color: #b31f2a;
+    font-weight: 400;
+    font-size: 18px;
+    padding-left: 9px;
+    font-family: 'Roboto', sans-serif;
+}
+.mockup__status {
+    text-transform: capitalize;
+}
+.cart__description {
+    font-size: 14px;
+    font-family: inherit;
+}
+.detail-link {
+    height: 39px;
+    font-size: 17px;
+    line-height: 39px;
+    text-align: center;
+    border-radius: 20px;
+    background: #0790df;
+    font-family: 'Roboto', sans-serif;
+}

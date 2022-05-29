@@ -1,0 +1,90 @@
+
+.header-content-top{
+    height: 85px;
+    padding: 0px 140px;
+}
+img.img-top {
+    height: 42px;
+}
+h2.header-top-title {
+    margin: 0;
+    padding-left: 20px;
+}
+.content-banner{
+    position: relative;
+    max-width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+    background-image: url("../images/0075d6b0e24ec6feff5e055cfc918e73.jpg") ;
+    background-size: cover;
+}
+.content-form{
+    background-color: #fff;
+    width: 398px;
+    height: 484px;
+    position: absolute;
+    top: 66px;
+    right: 102px;
+    bottom: 0;
+    padding: 30px;
+    border-radius: 11px;
+}
+input.form-banner-control {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    outline: none;
+    color: #000;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+.bnt-login {
+    padding-top: 55px;
+    padding-bottom: 55px;
+}
+button.btn-banner {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    background: #ee4d2d;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #fff;
+}
+a.link-forgot_password {
+    padding-bottom: 15px;
+    display: block;
+    text-decoration: none;
+}
+.social-network {
+    text-align: center;
+}
+button.btn-FB {
+    width: 140px;
+    height: 37px;
+    border: 1px solid #000;
+    outline: none;
+    background: #fff;
+    font-size: 16px;
+}
+button.btn-FB .fab{
+  color: #1877f2;
+}
+button.btn-google {
+    width: 140px;
+    height: 37px;
+    border: 1px solid #000;
+    outline: none;
+    background: #fff;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+}
+.google {
+    width: 20px;
+    height: 20px;
+    background-image: url('../images/google.png');
+    background-size: cover;
+    display: block;
+}
