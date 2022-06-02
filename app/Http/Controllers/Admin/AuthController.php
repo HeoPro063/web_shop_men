@@ -22,23 +22,33 @@ class AuthController extends Controller
 
 
     public function logIn(Request $request) {
-        return $request->all();
-        // try {
-        //     $this->validator->with($request->all())->passesOrFail(BaseValidatorInterface::RULE_LOGIN);
-        // } catch (ValidatorException $e) {
-        //     return redirect()->route('admin.index')->withErrors($e->getMessageBag())->withInput();
-        // }
-        // $data = $request->all();
-        // $remember = isset($data['remember']) ? true : false;
+        $data = $request->all();
 
-        // if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
-        //     if(Auth::user()->role_id != 2) {
-        //         return redirect()->route('admin.home')->withInput();
-        //     }
-        //     Auth()->logout();
-        // } 
-        // $request->session()->flash('login-error', __('Incorrect email or password.'));
-        // return redirect()->route('admin.index')->withInput();
+        try {
+            $this->validator->with($data)->passesOrFail(BaseValidatorInterface::RULE_LOGIN);
+        } catch (ValidatorException $e) {
+            return response()->json([
+                'status' => 403,
+                'message' => 'Bad request',
+                'datas' => $e->getMessageBag()
+            ]);
+        }
+        $remember = isset($data['remember']) ? true : false;
+
+        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
+            if(Auth::user()->role_id != 2) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'successfully',
+                    'datas' => Auth::user()
+                ]);
+            }
+            Auth()->logout();
+        } 
+        return response()->json([
+            'status' => 403,
+            'message' => 'Not main login information',
+        ]);
     }
 
     public function logout() {

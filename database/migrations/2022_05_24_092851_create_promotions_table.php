@@ -16,9 +16,10 @@ class CreatePromotionsTable extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('percent');
+            $table->float('percent', 8, 2);
             $table->date('start_date');
             $table->date('end_date');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

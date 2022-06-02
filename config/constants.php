@@ -1,7 +1,7 @@
 <?php 
 
 if (!defined('PAGE_NUMBER')) {
-    define('PAGE_NUMBER', 10);
+    define('PAGE_NUMBER', 2);
 }
 
 if (!defined('EXPENSIONS')) {

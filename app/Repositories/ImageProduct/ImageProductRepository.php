@@ -18,5 +18,8 @@ class ImageProductRepository extends BaseRepository implements ImageProductRepos
     public function selectImagesProduct($id) {
         return $this->model->where('product_id', $id)->get();
     }
-  
+    
+    public function deleteImagesProduct($id) {
+        return $this->model->where('product_id', $id)->delete();
+    }
 }

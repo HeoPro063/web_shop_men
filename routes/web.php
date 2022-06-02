@@ -3,13 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 
-
-// admin
-
-// front-end
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,7 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
-
-    require 'web_admin.php';
-    require 'web_frontend.php';
+require 'web_admin.php';
+require 'web_frontend.php';

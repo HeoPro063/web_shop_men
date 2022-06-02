@@ -44,7 +44,7 @@
         </div>
     </div>
     <script src="./frontend/models/js/admin.min.js"></script>
-    <script src="{{mix('/js/app.js')}}"></script>
+    <script src="{{mix('js/app.js')}}"></script>
     @yield('more-js')
 </body>
 

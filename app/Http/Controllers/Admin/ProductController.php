@@ -11,9 +11,16 @@ use Prettus\Validator\Exceptions\ValidatorException;
 
 use App\Repositories\Product\ProductRepositoryInterface; 
 use App\Repositories\ImageProduct\ImageProductRepositoryInterface; 
+use File;
 
 use Illuminate\Support\Facades\DB;
 use Exception;
+
+use App\Models\Category;
+use App\Models\Size;
+use App\Models\Color;
+use App\Models\Promotion;
+
 
 class ProductController extends Controller
 {
@@ -28,6 +35,10 @@ class ProductController extends Controller
         $this->validator = $validator;
     }
 
+    public function viewList() {
+        return view('admin.pages.product.index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,11 +47,41 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         //
-        $data =  $this->product->searchProduct($request->all());
+        $result =  $this->product->searchProduct($request->all());
+        $dataProducts = [];
+        foreach($result as $key => $item) {
+            $dataProducts[$key]['id'] = $item->id;
+            $dataProducts[$key]['name'] = $item->name;
+            $dataProducts[$key]['price'] = $item->price;
+            $dataProducts[$key]['quantity'] = $item->quantity;
+            $dataProducts[$key]['promotion'] = null;
+            if($item->promotion_id) {
+               $promotion =  $this->product->find($item->id)->Promotion()->firstOrFail();
+               $now = time(); // or your date as well
+               $your_date = strtotime($promotion->end_date);
+               $datediff = $your_date - $now;
+               $effective = round($datediff / (60 * 60 * 24)) + 1;
+                if($effective > 0) {
+                    $percent_promotion = $promotion->percent;
+                    $percent = $percent_promotion / 100;
+                    $price_promotion = $percent * $item->price;
+                    $promotion_pr =  $item->price - $price_promotion;
+                    $dataProducts[$key]['promotion'] = $promotion_pr;
+                    $dataProducts[$key]['percent_promotion'] = $percent_promotion;
+                }else{
+                    $dataProducts[$key]['promotion'] = 0;
+                }
+            }
+        }
+        $datas = [
+            'paginate' => $result,
+            'products' => $dataProducts,
+        ];
+
         return response()->json([
             'status' => 200,
             'message' => 'Successfully',
-            'datas' => $result
+            'datas' => $datas
         ]);
     }
 
@@ -54,8 +95,12 @@ class ProductController extends Controller
     public function create()
     {
         //
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
+        $promotions = Promotion::all();
 
-
+        return view('admin.pages.product.create', compact(['categories', 'sizes', 'colors', 'promotions']));
     }
 
     /**
@@ -82,28 +127,27 @@ class ProductController extends Controller
             DB::beginTransaction();
             $product = $this->product->create($data);
             $product_id = $product->id;
-            // sử lý image
-            // vd: data image 
-            $data_img = ['abc.PNG', 'abc.jpg', 'abc.jpeg'];
-            $array_ext = [];
-            $data_2 = [];
-            $expensions= array();
-            foreach($data_img as $key => $item) {
-                $file_parts = explode('.',$item);
-                $file_ext = strtolower(end($file_parts));
-                $array_ext[$key] = $file_ext;
-                if(!in_array($file_ext, EXPENSIONS)) {
-                    return response()->json([
-                        'status' => 403,
-                        'message' => 'Image not found',
-                    ]);
+            $dataImage = [];
+            if($request->hasFile('files')) {
+                foreach($request->file('files') as $file) {
+                    $file_ext = $file->getClientOriginalExtension();
+                    if(!in_array($file_ext, EXPENSIONS)) {
+                        return response()->json([
+                            'status' => 403,
+                            'message' => 'Image not found',
+                        ]);
+                    }
                 }
-                $data_2[$key] = [
-                    'product_id' => $product_id,
-                    'name' => $item
-                ];
+                foreach($request->file('files') as $key => $file) {
+                    $filename =   time().rand(1,100). '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('uploads'),$filename);
+                    $dataImage[$key] = [
+                        'product_id' => $product_id,
+                        'name' => $filename
+                    ];
+                }
+                $this->image_product->insertImageProduct($dataImage);
             }
-            $this->image_product->insertImageProduct($data_2);
             DB::commit();
             return response()->json([
                 'status' => 200,
@@ -163,7 +207,14 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
-        
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
+        $promotions = Promotion::all();
+
+        $product = $this->product->find($id);
+        $images = $product->ImageProducts()->get();
+        return view('admin.pages.product.edit', compact('product', 'images', 'categories', 'sizes', 'colors', 'promotions'));
     }
 
     /**
@@ -180,15 +231,25 @@ class ProductController extends Controller
         try {
             $this->validator->with($data)->setId($id)->passesOrFail(BaseValidatorInterface::RULE_UPDATE);
         } catch (ValidatorException $e) {
-            return response()->json($e, 403);
+            return response()->json([
+                'status' => 403,
+                'message' => 'Bad request',
+                'datas' => $e->getMessageBag()
+            ]);
         }
-
         $product = $this->product->update($id, $data);
         if(!$product) {
-            return response()->json(['error' => 'Product not found'], 500);
+            return response()->json([
+                'status' => 403,
+                'message' => 'Error updated',
+            ]);
         }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Success',
+            'datas' => $product
+        ]);
 
-        return response()->json($product, 200);
     }
 
     /**
@@ -200,6 +261,18 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
-        
+        $images = $this->image_product->selectImagesProduct($id);
+        foreach($images as $item) {
+            $path_image = 'uploads/'. $item->name;
+            if(File::exists($path_image)) {
+                File::delete($path_image);
+            }
+        }
+        $this->image_product->deleteImagesProduct($id);
+        $this->product->find($id)->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'success',
+        ]);
     }
 }

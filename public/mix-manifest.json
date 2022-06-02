@@ -3,5 +3,6 @@
     "/admins/js/app-admin.js": "/admins/js/app-admin.js",
     "/css/app.css": "/css/app.css",
     "/admins/css/admin.min.css": "/admins/css/admin.min.css",
+    "/admins/js/admin.min.js": "/admins/js/admin.min.js",
     "/frontend/models/js/admin.min.js": "/frontend/models/js/admin.min.js"
 }

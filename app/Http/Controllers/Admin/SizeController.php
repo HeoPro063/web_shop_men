@@ -28,13 +28,30 @@ class SizeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function viewList() {
+        return view('admin.pages.size.index');
+    }
+
     public function index(Request $request)
     {
         $result = $this->size->paginate($request->search);
+        $dataSizes = [];
+
+        foreach($result as $key => $item) {
+            $dataSizes[$key]['id'] = $item->id;
+            $dataSizes[$key]['name'] = $item->name;
+            $dataSizes[$key]['total_products'] = count($this->size->find($item->id)->Products()->get());
+        }
+        $datas = [
+            'paginate' => $result,
+            'sizes' => $dataSizes,
+        ];
+
         return response()->json([
             'status' => 200,
             'message' => 'Successfully',
-            'datas' => $result
+            'datas' => $datas
         ]);
     }
 
@@ -46,6 +63,7 @@ class SizeController extends Controller
     public function create()
     {
         //
+        return view('admin.pages.size.create');
     }
 
     /**
@@ -60,18 +78,12 @@ class SizeController extends Controller
         try {
             $this->validator->with($data)->passesOrFail(BaseValidatorInterface::RULE_CREATE);
         } catch (ValidatorException $e) {
-            return response()->json([
-                'status' => 403,
-                'message' => 'Bad request',
-                'datas' => $e->getMessageBag()
-            ]);
+           return redirect()->route('admin.size.create')->withErrors($e->getMessageBag())->withInput();
         }
         $size = $this->size->create($data);
-        return response()->json([
-            'status' => 200,
-            'message' => 'create successfully',
-            'datas' => $size
-        ]);
+        $request->session()->flash('success', 'Create size successfully');
+
+        return redirect()->route('admin.size.edit', $size->id);
     }
 
     /**
@@ -83,12 +95,7 @@ class SizeController extends Controller
     public function show($id)
     {
         //
-        $size = $this->size->find($id);
-        return response()->json([
-            'status' => 200,
-            'message' => 'successfully',
-            'datas' => $size
-        ]);
+      
     }
 
     /**
@@ -100,6 +107,8 @@ class SizeController extends Controller
     public function edit($id)
     {
         //
+        $size = $this->size->find($id);
+        return view('admin.pages.size.edit', ['size' => $size]);
     }
 
     /**
@@ -114,27 +123,17 @@ class SizeController extends Controller
         //
         $size = $this->size->find($id);
         if(!$size) {
-            return response()->json([
-                'status' => 403,
-                'message' => 'Size not found',
-            ]);
+            return redirect()->back();
         }
         $data =  $request->all();
         try {
             $this->validator->with($data)->setId($id)->passesOrFail(BaseValidatorInterface::RULE_UPDATE);
         } catch (ValidatorException $e) {
-            return response()->json([
-                'status' => 403,
-                'message' => 'Bad request',
-                'datas' => $e->getMessageBag()
-            ]);
+            return redirect()->route('admin.size.edit', $id)->withErrors($e->getMessageBag())->withInput();
         }
         $size = $this->size->update($id, $data);
-        return response()->json([
-            'status' => 200,
-            'message' => 'update successfully',
-            'datas' => $size
-        ]);
+        $request->session()->flash('success', 'Create size successfully');
+        return view('admin.pages.size.edit', ['size' => $size]);
     }
 
     /**

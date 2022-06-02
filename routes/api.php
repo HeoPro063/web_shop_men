@@ -31,25 +31,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     // // image product
 //     // Route::resource('/image_product' , ImageProductController::class);
 // });
-
-// Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
-    
-    
-//     Route::get('/', 'DashboardController@index')->name('dashboards.index');
-    
-//     Route::resource('permissions', 'PermissionController');
-//     Route::get('roles/get-permission', 'RoleController@getPermission')->name('roles.getPermission');
-//     Route::resource('roles', 'RoleController');
-
-//     Route::resource('departments', 'DepartmentController');
-//     Route::resource('treatment_types', 'TreatmentTypeController');
-//     Route::resource('users', 'UserController');
-
-//     Route::get('/instructions/demo', 'InstructionController@demo')->name('instructions.demo');
-//     Route::get('/instructions/{instruction}/history/{key}', 'InstructionController@history')->name('instructions.history');
-//     Route::resource('/instructions', 'InstructionController');
-
-//     Route::get('/forms/demo', 'FormController@demo')->name('forms.demo');
-//     Route::get('/forms/{form}/history/{key}', 'FormController@history')->name('forms.history');
-//     Route::resource('/forms', 'FormController');
-// });

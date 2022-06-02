@@ -29,9 +29,15 @@ mix.webpackConfig({
 });
 
 mix.styles([
-    // 'public/admins/css/app.css',
+    'public/admins/css/app.css',
+    'public/admins/more/css/style.css',
+    'public/admins/more/css/style.css',
+    'public/sweetalert2/sweetalert2.min.css',
 ], 'public/admins/css/admin.min.css');
 
+mix.scripts([
+    'public/sweetalert2/sweetalert2.min.js',
+], 'public/admins/js/admin.min.js');
 
 mix.scripts([
     'public/frontend/models/js/bootstrap.min.js',

@@ -48,6 +48,20 @@ const httpStore = new Vuex.Store({
                 });
             });
         },
+        delete({}, { url, data }) {
+            return new Promise((resolve, reject) => {
+                http({
+                    method: 'DELETE',
+                    url: url,
+                    data: data
+                }).then(function(response) {
+                    let resData = response.data;
+                    resolve(resData);
+                }).catch(function(error) {
+                    reject(error);
+                });
+            });
+        }
     }
 })
 

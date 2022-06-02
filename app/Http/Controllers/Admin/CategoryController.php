@@ -27,14 +27,28 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function viewList() {
+        return view('admin.pages.category.index');
+    }
+    
     public function index(Request $request)
     {
         //
         $result = $this->category->paginate($request->search);
+        $dataCategories = [];
+        foreach($result as $key => $item) {
+            $dataCategories[$key]['id'] = $item->id;
+            $dataCategories[$key]['name'] = $item->name;
+            $dataCategories[$key]['total_products'] = count($this->category->find($item->id)->Products()->get());
+        }
+        $datas = [
+            'paginate' => $result,
+            'categories' => $dataCategories,
+        ];
         return response()->json([
             'status' => 200,
             'message' => 'Successfully',
-            'datas' => $result
+            'datas' => $datas
         ]);
     }
 
@@ -46,7 +60,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        
+        return view('admin.pages.category.create');
     }
 
     /**
@@ -61,18 +75,12 @@ class CategoryController extends Controller
         try {
             $this->validator->with($data)->passesOrFail(BaseValidatorInterface::RULE_CREATE);
         } catch (ValidatorException $e) {
-            return response()->json([
-                'status' => 403,
-                'message' => 'Bad request',
-                'datas' => $e->getMessageBag()
-            ]);
+           return redirect()->route('admin.category.create')->withErrors($e->getMessageBag())->withInput();
         }
         $category = $this->category->create($data);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Create successfully',
-            'datas' => $category
-        ]);
+        $request->session()->flash('success', 'Create category successfully');
+
+        return redirect()->route('admin.category.edit', $category->id);
     }
 
     /**
@@ -83,13 +91,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
-        $category = $this->category->find($id);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully',
-            'datas' => $category
-        ]);
+        
     }
 
     /**
@@ -101,6 +103,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
+        $category = $this->category->find($id);
+        return view('admin.pages.category.edit', ['category' => $category]);
     }
 
     /**
@@ -115,27 +119,17 @@ class CategoryController extends Controller
         //
         $category = $this->category->find($id);
         if(!$category) {
-            return response()->json([
-                'status' => 403,
-                'message' => 'Category not found',
-            ]);
+            return redirect()->back();
         }
         $data =  $request->all();
         try {
             $this->validator->with($data)->setId($id)->passesOrFail(BaseValidatorInterface::RULE_UPDATE);
         } catch (ValidatorException $e) {
-            return response()->json([
-                'status' => 403,
-                'message' => 'Bad request',
-                'datas' => $e->getMessageBag()
-            ]);
+            return redirect()->route('admin.category.edit', $id)->withErrors($e->getMessageBag())->withInput();
         }
         $category = $this->category->update($id, $data);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Update Successfully',
-            'datas' => $category
-        ]);
+        $request->session()->flash('success', 'Update category successfully');
+        return view('admin.pages.category.edit', ['category' => $category]);
     }
 
     /**

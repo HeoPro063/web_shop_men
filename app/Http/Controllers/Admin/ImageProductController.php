@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use File;
 use App\Models\Product;
-use App\Repositories\Category\ImageProductRepositoryInterface; 
+use App\Repositories\ImageProduct\ImageProductRepositoryInterface; 
+use Illuminate\Support\Facades\DB;
 
 class ImageProductController extends Controller
 {
@@ -46,15 +47,45 @@ class ImageProductController extends Controller
     public function store(Request $request)
     {
         //
-        $product = Product::find($request->id_product);
-        if($product) {
-            
-        }
 
-        return response()->json([
-            'status' => 500,
-            'message' => 'Product not found',
-        ]);
+        try {
+            DB::beginTransaction();
+            $dataImage = [];
+            if($request->hasFile('files')) {
+                foreach($request->file('files') as $file) {
+                    $file_ext = $file->getClientOriginalExtension();
+                    if(!in_array($file_ext, EXPENSIONS)) {
+                        return response()->json([
+                            'status' => 403,
+                            'message' => 'Image not found',
+                        ]);
+                    }
+                }
+                foreach($request->file('files') as $key => $file) {
+                    $filename =   time().rand(1,100). '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('uploads'),$filename);
+                    $dataImage[$key] = [
+                        'product_id' => $request->product_id,
+                        'name' => $filename
+                    ];
+                }
+            }
+            $images = $this->imageProduct->insertImageProduct($dataImage);
+            $product = Product::find($request->product_id);
+            $imagesData = $product->ImageProducts()->get();
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Created Successfully',
+                'datas' => $imagesData
+            ]);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -100,5 +131,19 @@ class ImageProductController extends Controller
     public function destroy($id)
     {
         //
+        $image = $this->imageProduct->find($id);
+        $path_image = 'uploads/'. $image->name;
+        if(File::exists($path_image)) {
+            File::delete($path_image);
+            $image->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'success',
+            ]);
+        }
+        return response()->json([
+            'status' => 400,
+            'message' => 'Not Found',
+        ]);
     }
 }

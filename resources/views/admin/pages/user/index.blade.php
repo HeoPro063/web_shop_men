@@ -26,7 +26,6 @@
 	<div id="app">
 		<login></login>
 	</div>
-	<script src="admins/js/app.js"></script>
 	<script src="{{ mix('admins/js/app-admin.js') }}"></script>
 
 </body>

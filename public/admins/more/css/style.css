@@ -1,6 +1,10 @@
-.alert-omg{
-    padding:10px;
-    color: #000;
-    border-radius: 3px;
-    background-color: rgb(244, 208, 165);
+.dashboard {
+    width: 100%;
+    border: none;
+    font-size: 15px;
+    text-align: left;
+    padding-top: 16px;
+    padding-left: 25px;
+    color: #ced4da;
+    background: transparent;
 }

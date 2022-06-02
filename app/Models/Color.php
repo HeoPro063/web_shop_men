@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Color extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'favcolor'];
+
+    
+    public function Products() {
+        return $this->hasMany('App\Models\Product');
+    }
+
 }
