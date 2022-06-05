@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="./frontend/models/css/bootstrap.min.css">
     <link rel="stylesheet" href="./frontend/css/style.css">
     @yield('more-css')
+    <script>
+        const BASE_URL = "{{ url('') }}";
+	</script>
 </head>
 
 <body>
@@ -28,9 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid">
-                @include('frontend.include.banner')
-            </div>
+            @yield('more-banner')
             <div class="container-fluid">
                 <div class="row">
                     @yield('content')
@@ -43,9 +44,16 @@
             </div>
         </div>
     </div>
-    <script src="./frontend/models/js/admin.min.js"></script>
+    {{-- <script src="./frontend/models/js/admin.min.js"></script> --}}
+    <script src="./frontend/js/main.js"></script>
+    <script src="./frontend/models/js/jquery-3.6.0.slim.min.js"></script>
+    <script src="./frontend/models/js/bootstrap.min.js"></script>
+    <script src="./frontend/models/js/popper.min.js"></script>
     <script src="{{mix('js/app.js')}}"></script>
     @yield('more-js')
+
+
+   
 </body>
 
 </html>

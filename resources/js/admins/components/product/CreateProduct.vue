@@ -12,7 +12,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Category<span class="text-danger">*</span></label>
-                                        <select  name="category" v-validate="'required'" class="form-select" aria-label="Default select example" v-model="formData.category_id" :disabled="DataCategories.length == 0" :class="{'dops-status': DataCategories.length == 0, 'is-invalid' : errors.has('category')}">
+                                        <select  name="category" v-validate="'required'" class="form-select" aria-label="Default select example" v-model="formData.category_id" >
                                             <option :value="null" selected>Choose category</option>
                                             <option v-for="(item, index) in DataCategories" :value="item.id" :key="index">{{item.name}}</option>
                                         </select>
@@ -51,20 +51,46 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Color<span class="text-danger">*</span></label>
-                                        <select  class="form-select" v-validate="'required'"  v-model="formData.color_id" aria-label="Default select example" :disabled="DataColors.length == 0" :class="{'dops-status': DataColors.length == 0, 'is-invalid' : errors.has('color')}" name="color">
-                                            <option :value="null" selected>Choose color</option>
-                                            <option v-for="(item, index) in DataColors" :value="item.id" :key="index">{{item.name}}</option>
-                                        </select>
+                                        <multiselect
+                                            v-model="formData.colors"
+                                            :options="DataColors"
+                                            :multiple="true"
+                                            :close-on-select="false"
+                                            :clear-on-select="false"
+                                            :selectLabel="''"
+                                            :deselectLabel="''"
+                                            :placeholder="'Choose colors'"
+                                            track-by="name"
+                                            label="name"
+                                            :selectedLabel="''"
+                                            v-validate="'required'"
+                                            name="select_country_color"
+                                            @close="$validator.validate('select_country_color')"
+                                            :class="errors.first('select_country_color') ? 'is-invalid-more-css': ''"
+                                        ></multiselect>
                                         <span class="text text-danger">{{ errors.first('color') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Size<span class="text-danger">*</span></label>
-                                        <select class="form-select" v-validate="'required'" v-model="formData.size_id"  aria-label="Default select example" :disabled="DataSizes.length == 0" :class="{'dops-status': DataSizes.length == 0, 'is-invalid' : errors.has('size')}" name="size">
-                                            <option :value="null" selected>Choose size</option>
-                                            <option v-for="(item, index) in DataSizes" :value="item.id" :key="index">{{item.name}}</option>
-                                        </select>
+                                          <multiselect
+                                            v-model="formData.sizes"
+                                            :options="DataSizes"
+                                            :multiple="true"
+                                            :close-on-select="false"
+                                            :clear-on-select="false"
+                                            :selectLabel="''"
+                                            :deselectLabel="''"
+                                            :placeholder="'Choose sizes'"
+                                            track-by="name"
+                                            label="name"
+                                            :selectedLabel="''"
+                                            v-validate="'required'"
+                                            name="select_country_size"
+                                            @close="$validator.validate('select_country_size')"
+                                            :class="errors.first('select_country_size') ? 'is-invalid-more-css': ''"
+                                        ></multiselect>
                                         <span class="text text-danger">{{ errors.first('size') }}</span>
                                     </div>
                                 </div>
@@ -110,6 +136,9 @@
 
 <script>
 import httpStore from "@core/config/httpStore";
+import Multiselect from "vue-multiselect";
+import 'vue-multiselect/dist/vue-multiselect.min.css';
+
 export default {
     props: {
         categories: {
@@ -141,8 +170,8 @@ export default {
         return {
             formData: {
                 category_id: null,
-                size_id: null,
-                color_id: null,
+                sizes: [],
+                colors: [],
                 promotion_id: null,
                 name: null,
                 quantity: null,
@@ -176,8 +205,14 @@ export default {
             let scop = this;
             let formData = new FormData();
             formData.append('category_id', scop.formData.category_id);
-            formData.append('size_id', scop.formData.size_id);
-            formData.append('color_id', scop.formData.color_id);
+            for (let i = 0; i < scop.formData.sizes.length; i++) {
+                let size =  scop.formData.sizes[i].id;
+                formData.append('size_ids['+i+']', size);
+            }
+            for (let i = 0; i < scop.formData.colors.length; i++) {
+                let color =  scop.formData.colors[i].id;
+                formData.append('color_ids['+i+']', color);
+            }
             formData.append('promotion_id', scop.formData.promotion_id);
             formData.append('name', scop.formData.name);
             formData.append('quantity', scop.formData.quantity);
@@ -188,17 +223,16 @@ export default {
                 let file =  scop.formData.imagesProduct[i];
                 formData.append('files['+i+']', file);
             }
-
             scop.$validator.validate().then(valid => {
                 if (valid) {
+                    this.$loading(true);
                      httpStore
                         .dispatch("post", {
                             url: scop.baseUrl("product"),
                             data: formData,
                         })
                         .then(response => {
-                            console.log(response)
-                            // window.location.href = scop.baseUrl(`/product/${response.datas.id}/edit`);
+                            window.location.href = scop.baseUrl(`/product/${response.datas.id}/edit`);
                         })
                         .catch(error => {
                             this.$toast.open({
@@ -208,6 +242,8 @@ export default {
                                 dismissible: true,
                                 position: "top"
                             });
+                        }).finally(() => {
+                            this.$loading(false);
                         });
                 }
             });
@@ -218,11 +254,18 @@ export default {
                 this.formData.imagesProduct.push(event.target.files[i]);
             }
         }
+    },
+    components: {
+        Multiselect
     }
 }
 </script>
 <style scoped>
     .dops-status{
         cursor: no-drop;
+    }
+    .is-invalid-more-css{
+        border: 1px solid red;
+        border-radius: 3px;
     }
 </style>

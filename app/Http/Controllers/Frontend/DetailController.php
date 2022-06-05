@@ -33,4 +33,12 @@ class DetailController extends Controller
         $request->session()->put('cart',$cart);
         return redirect()->back();
     }
+
+    public function detail($id) {
+        $product = $this->product->find($id);
+        $data_detail = $this->product->reposeDataDetail($product);
+        return view('frontend.pages.detail', compact('data_detail'));
+    }
+
+    
 }

@@ -8,5 +8,7 @@
     :sizes="{{json_encode($sizes)}}"
     :colors="{{json_encode($colors)}}"
     :promotions="{{json_encode($promotions)}}"
+    :data_product_colors="{{json_encode($data_product_colors)}}"
+    :data_product_sizes="{{json_encode($data_product_sizes)}}"
     ></product-edit-admin>
 @stop

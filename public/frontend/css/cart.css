@@ -112,3 +112,13 @@ button.btn-delete {
     color: #fff;
     background-color: #000;
 }
+.number-wrapper {
+    width: 100px;
+}
+.btn-number {
+    width: 25px;
+}
+#addfrom,
+#apartfrom {
+    width: 25px;
+}

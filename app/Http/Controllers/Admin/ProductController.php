@@ -20,7 +20,8 @@ use App\Models\Category;
 use App\Models\Size;
 use App\Models\Color;
 use App\Models\Promotion;
-
+use App\Models\ProductColor;
+use App\Models\ProductSize;
 
 class ProductController extends Controller
 {
@@ -125,6 +126,9 @@ class ProductController extends Controller
        
         try {
             DB::beginTransaction();
+            if($request->promotion_id){
+                unset($data['promotion_id']);
+            }
             $product = $this->product->create($data);
             $product_id = $product->id;
             $dataImage = [];
@@ -148,6 +152,20 @@ class ProductController extends Controller
                 }
                 $this->image_product->insertImageProduct($dataImage);
             }
+            foreach($request->color_ids as $key => $color_id) {
+                $ProductColor = new ProductColor;
+                $ProductColor->product_id = $product_id;
+                $ProductColor->color_id = intval($color_id);
+                $ProductColor->save();
+            }
+
+            foreach($request->size_ids as $key => $size_id) {
+                $ProductSize = new ProductSize;
+                $ProductSize->product_id = $product_id;
+                $ProductSize->size_id = intval($size_id);
+                $ProductSize->save();
+            }
+
             DB::commit();
             return response()->json([
                 'status' => 200,
@@ -214,7 +232,18 @@ class ProductController extends Controller
 
         $product = $this->product->find($id);
         $images = $product->ImageProducts()->get();
-        return view('admin.pages.product.edit', compact('product', 'images', 'categories', 'sizes', 'colors', 'promotions'));
+        $product_colors = $product->ProductColors()->get();
+        $data_product_colors = [];
+        foreach($product_colors as $key => $item) {
+            $data_product_colors[$key] = $item->Color()->firstOrFail();
+        }
+        $product_sizes = $product->ProductSizes()->get();
+        $data_product_sizes = [];
+        foreach($product_sizes as $key => $item) {
+            $data_product_sizes[$key] = $item->Size()->firstOrFail();
+        }
+
+        return view('admin.pages.product.edit', compact('product', 'images', 'categories', 'sizes', 'colors', 'promotions', 'data_product_colors', 'data_product_sizes'));
     }
 
     /**
@@ -237,19 +266,50 @@ class ProductController extends Controller
                 'datas' => $e->getMessageBag()
             ]);
         }
-        $product = $this->product->update($id, $data);
-        if(!$product) {
+
+        try {
+            DB::beginTransaction();
+
+            $data_colors = [];
+            $data_sizes = [];
+            if($data['colors']) {
+                $data_colors = $data['colors'];
+                unset($data['colors']);
+            }
+
+            if($data['sizes']) {
+                $data_sizes = $data['sizes'];
+                unset($data['sizes']);
+            }
+            $product = $this->product->update($id, $data);
+            ProductColor::where('product_id', $id)->delete();
+            ProductSize::where('product_id', $id)->delete();
+            foreach($data_colors as $key => $color) {
+                $ProductColor = new ProductColor;
+                $ProductColor->product_id = $product->id;
+                $ProductColor->color_id = $color['id'];
+                $ProductColor->save();
+            }
+            foreach($data_sizes as $key => $size) {
+                $ProductSize = new ProductSize;
+                $ProductSize->product_id = $product->id;
+                $ProductSize->size_id = $size['id'];
+                $ProductSize->save();
+            }
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Success',
+                'datas' => $product
+            ]);
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 403,
                 'message' => 'Error updated',
+                'datas' => $e
             ]);
         }
-        return response()->json([
-            'status' => 200,
-            'message' => 'Success',
-            'datas' => $product
-        ]);
-
     }
 
     /**

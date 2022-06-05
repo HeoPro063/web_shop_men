@@ -49,20 +49,46 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Color<span class="text-danger">*</span></label>
-                                        <select  class="form-select" v-validate="'required'"  v-model="formData.color_id" aria-label="Default select example" :disabled="DataColors.length == 0" :class="{'dops-status': DataColors.length == 0, 'is-invalid' : errors.has('color')}" name="color">
-                                            <option :value="null" selected>Choose color</option>
-                                            <option v-for="(item, index) in DataColors" :value="item.id" :key="index">{{item.name}}</option>
-                                        </select>
+                                            <multiselect
+                                            v-model="formData.colors"
+                                            :options="DataColors"
+                                            :multiple="true"
+                                            :close-on-select="false"
+                                            :clear-on-select="false"
+                                            :selectLabel="''"
+                                            :deselectLabel="''"
+                                            :placeholder="'Choose sizes'"
+                                            track-by="name"
+                                            label="name"
+                                            :selectedLabel="''"
+                                            v-validate="'required'"
+                                            name="select_country_size"
+                                            @close="$validator.validate('select_country_size')"
+                                            :class="errors.first('select_country_size') ? 'is-invalid-more-css': ''"
+                                        ></multiselect>
                                         <span class="text text-danger">{{ errors.first('color') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Size<span class="text-danger">*</span></label>
-                                        <select class="form-select" v-validate="'required'" v-model="formData.size_id"  aria-label="Default select example" :disabled="DataSizes.length == 0" :class="{'dops-status': DataSizes.length == 0, 'is-invalid' : errors.has('size')}" name="size">
-                                            <option :value="null" selected>Choose size</option>
-                                            <option v-for="(item, index) in DataSizes" :value="item.id" :key="index">{{item.name}}</option>
-                                        </select>
+                                          <multiselect
+                                            v-model="formData.sizes"
+                                            :options="DataSizes"
+                                            :multiple="true"
+                                            :close-on-select="false"
+                                            :clear-on-select="false"
+                                            :selectLabel="''"
+                                            :deselectLabel="''"
+                                            :placeholder="'Choose sizes'"
+                                            track-by="name"
+                                            label="name"
+                                            :selectedLabel="''"
+                                            v-validate="'required'"
+                                            name="select_country_size"
+                                            @close="$validator.validate('select_country_size')"
+                                            :class="errors.first('select_country_size') ? 'is-invalid-more-css': ''"
+                                        ></multiselect>
                                         <span class="text text-danger">{{ errors.first('size') }}</span>
                                     </div>
                                 </div>
@@ -116,6 +142,8 @@
 
 <script>
 import httpStore from "@core/config/httpStore";
+import Multiselect from "vue-multiselect";
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 export default {
     props: {
         product: {
@@ -153,6 +181,18 @@ export default {
             default: () => {
                 return [];
             },
+        }, 
+        data_product_colors: {
+            type: Array,
+            default: () => {
+                return [];
+            },
+        },
+        data_product_sizes: {
+            type: Array,
+            default: () => {
+                return [];
+            },
         },
     },
     data() {
@@ -160,8 +200,8 @@ export default {
             formData: {
                 id: null,
                 category_id: null,
-                size_id: null,
-                color_id: null,
+                sizes: [],
+                colors: [],
                 promotion_id: null,
                 name: null,
                 quantity: null,
@@ -243,8 +283,8 @@ export default {
         getDataEdit() {
           this.formData.id = this.product.id,
           this.formData.category_id = this.product.category_id,
-          this.formData.size_id = this.product.size_id,
-          this.formData.color_id = this.product.color_id,
+          this.formData.sizes = this.data_product_sizes,
+          this.formData.colors = this.data_product_colors,
           this.formData.promotion_id = this.product.promotion_id,
           this.formData.name = this.product.name,
           this.formData.quantity = this.product.quantity,
@@ -360,6 +400,9 @@ export default {
     },
     created() {
        this.getDataEdit();
+    },
+    components: {
+        Multiselect
     }
 }
 </script>

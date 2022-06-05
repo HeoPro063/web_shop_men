@@ -116,3 +116,8 @@ button.addfrom {
     border:none;
     outline: none;
 }
+.form-number::-webkit-outer-spin-button,
+.form-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
