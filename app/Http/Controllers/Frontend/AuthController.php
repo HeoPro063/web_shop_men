@@ -12,7 +12,7 @@ use App\Models\User;
 use Validator;
 use App\VerifyEmail\VerifyEmail;
 use App\Jobs\MailRegisterUserJob;
-
+use Hash;
 class AuthController extends Controller
 {
     //
@@ -202,5 +202,33 @@ class AuthController extends Controller
             'status' => 400,
             'message' => 'error',
         ]);
+    }
+
+    public function RegisterPassword(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|min:6|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'required|min:6',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'error',
+            ]);
+        }
+        if($request->email) {
+            $user = User::where('email', $request->email)->where('active', 1)->first();
+            $user->password = Hash::make($request->password);
+            $user->active = 2;
+            $user->save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'success',
+            ]);
+        }
+
+    }
+
+    public function registerDone() {
+        return view('frontend.pages.registerDone');
     }
 }

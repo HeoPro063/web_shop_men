@@ -81,8 +81,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $datas[$key]['price'] = $item->price;
             $images = $item->ImageProducts()->get();      
             $datas[$key]['image'] = $images[0]->name;
+            $datas[$key]['description'] = $item->description;
+            $datas[$key]['purchases'] = $item->purchases;
+            $datas[$key]['quantity'] = $item->quantity;
+            foreach ($images as $key_img => $img) {
+                $datas[$key]['data_images'][$key_img]['name'] = $img->name;
+            }
             $datas[$key]['status_promotion'] = 0;
-            if($item->promotion) {
+            if($item->promotion_id) {
                 $promotion = $item->Promotion()->firstOrFail();
                 $now = time(); // or your date as well
                 $your_date = strtotime($promotion->end_date);
@@ -97,6 +103,17 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     $datas[$key]['promotion'] = $promotion_pr;
                     $datas[$key]['percent_promotion'] = $percent_promotion;
                 }
+            }
+            $colors = $item->ProductColors()->get();
+            foreach ($colors as $key_color => $color) {
+                $datas[$key]['data_colors'][$key_color]['id'] = $color->Color()->firstOrFail()->id;
+                $datas[$key]['data_colors'][$key_color]['name'] = $color->Color()->firstOrFail()->name;
+            }
+
+            $sizes = $item->ProductSizes()->get();
+            foreach($sizes as $key_size => $size) {
+                $datas[$key]['data_sizes'][$key_size]['id'] = $size->Size()->firstOrFail()->id;
+                $datas[$key]['data_sizes'][$key_size]['name'] = $size->Size()->firstOrFail()->name;
             }
         }
         return $datas;
@@ -142,6 +159,12 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $datas['data_sizes'][$key]['name'] = $size->Size()->firstOrFail()->name;
         }
         return $datas;
+    }
+
+    public function getProductNews($limit) {
+
+        $product = $this->model->offset(0)->limit($limit)->orderBy('id', 'DESC')->get();
+        return $this->responDataGet($product);
     }
    
 }

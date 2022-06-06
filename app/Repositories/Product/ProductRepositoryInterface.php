@@ -16,4 +16,6 @@ interface ProductRepositoryInterface extends RepositoryInterface
     public function getProductSearch($request = []);
 
     public function reposeDataDetail($product = []);
+
+    public function getProductNews($limit);
 }

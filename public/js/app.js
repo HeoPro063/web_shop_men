@@ -2462,7 +2462,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -2483,7 +2482,9 @@ __webpack_require__.r(__webpack_exports__);
       statusCheck: true,
       checkemail: true,
       token: null,
-      checkaccountpassword: true
+      checkaccountpassword: true,
+      password: null,
+      re_password: null
     };
   },
   methods: {
@@ -2529,30 +2530,28 @@ __webpack_require__.r(__webpack_exports__);
         });
       })["finally"](function () {});
     },
-    submitRegister: function submitRegister() {
+    submitPassword: function submitPassword() {
+      var _this = this;
+
       var scop = this;
       var formData = {
         email: scop.emailUser,
-        token: scop.token
+        password: scop.password,
+        password_confirmation: scop.re_password
       };
       scop.$validator.validate().then(function (valid) {
         if (valid) {
           _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("post", {
-            url: scop.baseUrl("check-token"),
+            url: scop.baseUrl("register-password"),
             data: formData
           }).then(function (response) {
             if (response.status === 200) {
-              scop.$toast.open({
-                message: "Success",
-                type: "success",
-                duration: 2000,
-                dismissible: true,
-                position: "top"
-              });
-              window.location.href = scop.baseUrl("email/password?email=".concat(response.datas.email));
+              _this.$loading(true);
+
+              window.location.href = scop.baseUrl("register-done");
             } else {
               scop.$toast.open({
-                message: "Token not found",
+                message: "Erro password",
                 type: "error",
                 duration: 2000,
                 dismissible: true,
@@ -2572,7 +2571,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     checkAccoutPassword: function checkAccoutPassword() {
-      var _this = this;
+      var _this2 = this;
 
       var scop = this;
       this.$loading(true);
@@ -2580,7 +2579,7 @@ __webpack_require__.r(__webpack_exports__);
         url: scop.baseUrl("check-accout-view-passowrd?email=".concat(scop.emailUser))
       }).then(function (response) {
         if (response.status === 201) {
-          _this.checkaccountpassword = false;
+          _this2.checkaccountpassword = false;
         } else if (response.status === 400) {
           window.location.href = scop.baseUrl("register");
         } else {}
@@ -2593,9 +2592,86 @@ __webpack_require__.r(__webpack_exports__);
           position: "top"
         });
       })["finally"](function () {
-        _this.$loading(false);
+        _this2.$loading(false);
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/email/RegisterDone.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/email/RegisterDone.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  created: function created() {
+    this.$loading(false);
   }
 });
 
@@ -2677,6 +2753,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/config/httpStore */ "./resources/js/core/config/httpStore.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2829,10 +2913,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    user: Object
+    user: Object,
+    datacart: {
+      type: Object,
+      "default": function _default() {
+        return [];
+      }
+    }
   },
   data: function data() {
     return {
@@ -2876,12 +2967,231 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
-  created: function created() {},
-  methods: {
-    baseUrl: function baseUrl(url) {
-      return window.location.href + url;
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)(["getCart"])),
+  created: function created() {
+    this.updatedDataCartVx();
+  },
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)(["UPDATE_DATA_CART"])), {}, {
+    formatImage: function formatImage(img) {
+      return "uploads/".concat(img);
+    },
+    formatPrice: function formatPrice(price) {
+      var formatter = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND"
+      });
+      return formatter.format(price);
+    },
+    updatedDataCartVx: function updatedDataCartVx() {
+      this.UPDATE_DATA_CART(this.datacart);
+    },
+    deleteItemCart: function deleteItemCart(index) {
+      var _this = this;
+
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: this.baseUrl("get-delete-cart?id=".concat(index)),
+        data: this.dataAddCart
+      }).then(function (response) {
+        _this.UPDATE_DATA_CART(response.datas);
+
+        scop.$toast.open({
+          message: "Success",
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        _this.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        _this.$loading(false);
+      });
     }
-  }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/modal/DetailModal.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/modal/DetailModal.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/config/httpStore */ "./resources/js/core/config/httpStore.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    dataDetailModal: {
+      type: Object
+    }
+  },
+  data: function data() {
+    return {
+      size_id: null,
+      color_id: null
+    };
+  },
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)(["UPDATE_DATA_CART"])), {}, {
+    formatImage: function formatImage(img) {
+      return "uploads/".concat(img);
+    },
+    formatPrice: function formatPrice(price) {
+      var formatter = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND"
+      });
+      return formatter.format(price);
+    },
+    addMoreCart: function addMoreCart() {
+      var dataAddCart = {
+        id: this.dataDetailModal.id,
+        size_id: this.size_id,
+        color_id: this.color_id,
+        quantity: 1,
+        status_promotion: this.dataDetailModal.status_promotion
+      };
+      var scop = this;
+      scop.$loading(true);
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("post", {
+        url: scop.baseUrl("post-add-cart"),
+        data: dataAddCart
+      }).then(function (response) {
+        scop.UPDATE_DATA_CART(response.datas);
+        scop.$toast.open({
+          message: "Success",
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        scop.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        scop.$loading(false);
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -3154,10 +3464,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Detail.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Detail.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Checkout.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Checkout.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3165,619 +3475,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {
-    datadetail: {
-      type: Array,
-      "default": function _default() {
-        return [];
-      }
-    }
-  },
-  data: function data() {
-    return {
-      dataDetail: this.datadetail
-    };
-  },
-  methods: {
-    formatImage: function formatImage(img) {
-      return "uploads/".concat(img);
-    },
-    formatPrice: function formatPrice(price) {
-      var formatter = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND"
-      });
-      return formatter.format(price);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Home.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Home.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3974,6 +3671,844 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Detail.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Detail.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/config/httpStore */ "./resources/js/core/config/httpStore.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    datadetail: {
+      type: Object,
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)(["getCart"])),
+  data: function data() {
+    return {
+      dataDetail: this.datadetail,
+      dataAddCart: {
+        id: this.datadetail.id,
+        size_id: null,
+        color_id: null,
+        quantity: 1,
+        status_promotion: this.datadetail.status_promotion
+      }
+    };
+  },
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)(["UPDATE_DATA_CART"])), {}, {
+    formatImage: function formatImage(img) {
+      return "uploads/".concat(img);
+    },
+    formatPrice: function formatPrice(price) {
+      var formatter = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND"
+      });
+      return formatter.format(price);
+    },
+    chooseColor: function chooseColor(id) {
+      this.dataAddCart.color_id = id;
+    },
+    chooseSize: function chooseSize(id) {
+      this.dataAddCart.size_id = id;
+    },
+    addSubmitCart: function addSubmitCart() {
+      var _this = this;
+
+      var scop = this;
+      scop.$loading(true);
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("post", {
+        url: scop.baseUrl("post-add-cart"),
+        data: scop.dataAddCart
+      }).then(function (response) {
+        _this.UPDATE_DATA_CART(response.datas);
+
+        scop.$toast.open({
+          message: "Success",
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        scop.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        scop.$loading(false);
+      });
+    }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Home.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Home.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/config/httpStore */ "./resources/js/core/config/httpStore.js");
+/* harmony import */ var _frontends_components_modal_DetailModal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/frontends/components/modal/DetailModal.vue */ "./resources/js/frontends/components/modal/DetailModal.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      dataProductNew: [],
+      limitdatanew: 8,
+      DataDetailModal: {}
+    };
+  },
+  methods: {
+    getDataNew: function getDataNew(limit) {
+      var _this = this;
+
+      this.limitdatanew += limit;
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: this.baseUrl("home/get-data-new?limit=".concat(this.limitdatanew))
+      }).then(function (response) {
+        _this.dataProductNew = response.datas;
+      })["catch"](function (error) {
+        _this.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      });
+    },
+    formatImage: function formatImage(img) {
+      return "uploads/".concat(img);
+    },
+    formatPrice: function formatPrice(price) {
+      var formatter = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND"
+      });
+      return formatter.format(price);
+    },
+    modalEditData: function modalEditData(item) {
+      this.DataDetailModal = item;
+    }
+  },
+  created: function created() {
+    this.getDataNew(0);
+  },
+  components: {
+    DetailModal: _frontends_components_modal_DetailModal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
 
 /***/ }),
 
@@ -4221,14 +4756,15 @@ var httpStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-toast-notification */ "./node_modules/vue-toast-notification/dist/index.min.js");
-/* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_toast_notification__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_toast_notification_dist_theme_sugar_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-toast-notification/dist/theme-sugar.css */ "./node_modules/vue-toast-notification/dist/theme-sugar.css");
-/* harmony import */ var vuejs_loading_plugin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuejs-loading-plugin */ "./node_modules/vuejs-loading-plugin/index.js");
-/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
-/* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
+/* harmony import */ var _frontends_stores__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/frontends/stores */ "./resources/js/frontends/stores/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-toast-notification */ "./node_modules/vue-toast-notification/dist/index.min.js");
+/* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_toast_notification__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_toast_notification_dist_theme_sugar_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-toast-notification/dist/theme-sugar.css */ "./node_modules/vue-toast-notification/dist/theme-sugar.css");
+/* harmony import */ var vuejs_loading_plugin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuejs-loading-plugin */ "./node_modules/vuejs-loading-plugin/index.js");
+/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
+/* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 
 __webpack_require__(/*! @/admins/config/mixin */ "./resources/js/admins/config/mixin.js");
@@ -4240,21 +4776,63 @@ __webpack_require__(/*! @/admins/config/mixin */ "./resources/js/admins/config/m
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('header-user', (__webpack_require__(/*! @/frontends/components/layouts/Header.vue */ "./resources/js/frontends/components/layouts/Header.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('footer-user', (__webpack_require__(/*! @/frontends/components/layouts/Footer.vue */ "./resources/js/frontends/components/layouts/Footer.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('home', (__webpack_require__(/*! @/frontends/pages/Home.vue */ "./resources/js/frontends/pages/Home.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('category', (__webpack_require__(/*! @/frontends/pages/Category.vue */ "./resources/js/frontends/pages/Category.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('detail', (__webpack_require__(/*! @/frontends/pages/Detail.vue */ "./resources/js/frontends/pages/Detail.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('register', (__webpack_require__(/*! @/frontends/pages/Register.vue */ "./resources/js/frontends/pages/Register.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('confirm', (__webpack_require__(/*! @/frontends/components/email/Confirm.vue */ "./resources/js/frontends/components/email/Confirm.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('password', (__webpack_require__(/*! @/frontends/components/email/Password.vue */ "./resources/js/frontends/components/email/Password.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].use(vue2_datepicker__WEBPACK_IMPORTED_MODULE_4__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].use(vee_validate__WEBPACK_IMPORTED_MODULE_0__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].use((vue_toast_notification__WEBPACK_IMPORTED_MODULE_1___default()));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].use(vuejs_loading_plugin__WEBPACK_IMPORTED_MODULE_3__["default"]);
-var app = new vue__WEBPACK_IMPORTED_MODULE_6__["default"]({
-  el: '#app'
+
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('header-user', (__webpack_require__(/*! @/frontends/components/layouts/Header.vue */ "./resources/js/frontends/components/layouts/Header.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('footer-user', (__webpack_require__(/*! @/frontends/components/layouts/Footer.vue */ "./resources/js/frontends/components/layouts/Footer.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('home', (__webpack_require__(/*! @/frontends/pages/Home.vue */ "./resources/js/frontends/pages/Home.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('category', (__webpack_require__(/*! @/frontends/pages/Category.vue */ "./resources/js/frontends/pages/Category.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('detail', (__webpack_require__(/*! @/frontends/pages/Detail.vue */ "./resources/js/frontends/pages/Detail.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('register', (__webpack_require__(/*! @/frontends/pages/Register.vue */ "./resources/js/frontends/pages/Register.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('checkout', (__webpack_require__(/*! @/frontends/pages/Checkout.vue */ "./resources/js/frontends/pages/Checkout.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('confirm', (__webpack_require__(/*! @/frontends/components/email/Confirm.vue */ "./resources/js/frontends/components/email/Confirm.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('password', (__webpack_require__(/*! @/frontends/components/email/Password.vue */ "./resources/js/frontends/components/email/Password.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('register-done', (__webpack_require__(/*! @/frontends/components/email/RegisterDone.vue */ "./resources/js/frontends/components/email/RegisterDone.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].use(vue2_datepicker__WEBPACK_IMPORTED_MODULE_5__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].use(vee_validate__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].use((vue_toast_notification__WEBPACK_IMPORTED_MODULE_2___default()));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].use(vuejs_loading_plugin__WEBPACK_IMPORTED_MODULE_4__["default"]);
+var app = new vue__WEBPACK_IMPORTED_MODULE_7__["default"]({
+  el: '#app',
+  store: _frontends_stores__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
+
+/***/ }),
+
+/***/ "./resources/js/frontends/stores/index.js":
+/*!************************************************!*\
+  !*** ./resources/js/frontends/stores/index.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _core_config_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @core/config/http */ "./resources/js/core/config/http.js");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: {
+    dataCart: []
+  },
+  getters: {
+    getCart: function getCart(state) {
+      return state.dataCart;
+    }
+  },
+  mutations: {
+    UPDATE_DATA_CART: function UPDATE_DATA_CART(state, payload) {
+      state.dataCart = payload;
+    }
+  },
+  actions: {}
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
 /***/ }),
 
@@ -4419,7 +4997,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.price_promotion {\r\n  font-size: 14px;\r\n  color: gray;\r\n  text-decoration: line-through;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.price_promotion {\r\n  font-size: 14px;\r\n  color: gray;\r\n  text-decoration: line-through;\n}\n.border-number {\r\n  border: 1px solid red;\n}\nimg.product {\r\n    height: 376px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17259,6 +17837,45 @@ component.options.__file = "resources/js/frontends/components/email/Password.vue
 
 /***/ }),
 
+/***/ "./resources/js/frontends/components/email/RegisterDone.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/frontends/components/email/RegisterDone.vue ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RegisterDone_vue_vue_type_template_id_4b713b95___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterDone.vue?vue&type=template&id=4b713b95& */ "./resources/js/frontends/components/email/RegisterDone.vue?vue&type=template&id=4b713b95&");
+/* harmony import */ var _RegisterDone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterDone.vue?vue&type=script&lang=js& */ "./resources/js/frontends/components/email/RegisterDone.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RegisterDone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegisterDone_vue_vue_type_template_id_4b713b95___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RegisterDone_vue_vue_type_template_id_4b713b95___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/frontends/components/email/RegisterDone.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/frontends/components/layouts/Footer.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/frontends/components/layouts/Footer.vue ***!
@@ -17337,6 +17954,45 @@ component.options.__file = "resources/js/frontends/components/layouts/Header.vue
 
 /***/ }),
 
+/***/ "./resources/js/frontends/components/modal/DetailModal.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/frontends/components/modal/DetailModal.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _DetailModal_vue_vue_type_template_id_31df60cd___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DetailModal.vue?vue&type=template&id=31df60cd& */ "./resources/js/frontends/components/modal/DetailModal.vue?vue&type=template&id=31df60cd&");
+/* harmony import */ var _DetailModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DetailModal.vue?vue&type=script&lang=js& */ "./resources/js/frontends/components/modal/DetailModal.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DetailModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DetailModal_vue_vue_type_template_id_31df60cd___WEBPACK_IMPORTED_MODULE_0__.render,
+  _DetailModal_vue_vue_type_template_id_31df60cd___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/frontends/components/modal/DetailModal.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/frontends/pages/Category.vue":
 /*!***************************************************!*\
   !*** ./resources/js/frontends/pages/Category.vue ***!
@@ -17374,6 +18030,45 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/frontends/pages/Category.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/frontends/pages/Checkout.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/frontends/pages/Checkout.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Checkout_vue_vue_type_template_id_57de6506___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Checkout.vue?vue&type=template&id=57de6506& */ "./resources/js/frontends/pages/Checkout.vue?vue&type=template&id=57de6506&");
+/* harmony import */ var _Checkout_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Checkout.vue?vue&type=script&lang=js& */ "./resources/js/frontends/pages/Checkout.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Checkout_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Checkout_vue_vue_type_template_id_57de6506___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Checkout_vue_vue_type_template_id_57de6506___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/frontends/pages/Checkout.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -17531,6 +18226,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/frontends/components/email/RegisterDone.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/frontends/components/email/RegisterDone.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RegisterDone.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/email/RegisterDone.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/frontends/components/layouts/Footer.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************!*\
   !*** ./resources/js/frontends/components/layouts/Footer.vue?vue&type=script&lang=js& ***!
@@ -17563,6 +18274,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/frontends/components/modal/DetailModal.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/frontends/components/modal/DetailModal.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DetailModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/modal/DetailModal.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/frontends/pages/Category.vue?vue&type=script&lang=js&":
 /*!****************************************************************************!*\
   !*** ./resources/js/frontends/pages/Category.vue?vue&type=script&lang=js& ***!
@@ -17576,6 +18303,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Category_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Category.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Category.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Category_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/frontends/pages/Checkout.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/frontends/pages/Checkout.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Checkout_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Checkout.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Checkout.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Checkout_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -17772,6 +18515,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/frontends/components/email/RegisterDone.vue?vue&type=template&id=4b713b95&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/frontends/components/email/RegisterDone.vue?vue&type=template&id=4b713b95& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDone_vue_vue_type_template_id_4b713b95___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDone_vue_vue_type_template_id_4b713b95___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterDone_vue_vue_type_template_id_4b713b95___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RegisterDone.vue?vue&type=template&id=4b713b95& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/email/RegisterDone.vue?vue&type=template&id=4b713b95&");
+
+
+/***/ }),
+
 /***/ "./resources/js/frontends/components/layouts/Footer.vue?vue&type=template&id=52eafdc4&":
 /*!*********************************************************************************************!*\
   !*** ./resources/js/frontends/components/layouts/Footer.vue?vue&type=template&id=52eafdc4& ***!
@@ -17806,6 +18566,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/frontends/components/modal/DetailModal.vue?vue&type=template&id=31df60cd&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/frontends/components/modal/DetailModal.vue?vue&type=template&id=31df60cd& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailModal_vue_vue_type_template_id_31df60cd___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailModal_vue_vue_type_template_id_31df60cd___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailModal_vue_vue_type_template_id_31df60cd___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DetailModal.vue?vue&type=template&id=31df60cd& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/modal/DetailModal.vue?vue&type=template&id=31df60cd&");
+
+
+/***/ }),
+
 /***/ "./resources/js/frontends/pages/Category.vue?vue&type=template&id=d36cbd96&scoped=true&":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/frontends/pages/Category.vue?vue&type=template&id=d36cbd96&scoped=true& ***!
@@ -17819,6 +18596,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Category_vue_vue_type_template_id_d36cbd96_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Category_vue_vue_type_template_id_d36cbd96_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Category.vue?vue&type=template&id=d36cbd96&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Category.vue?vue&type=template&id=d36cbd96&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/frontends/pages/Checkout.vue?vue&type=template&id=57de6506&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/frontends/pages/Checkout.vue?vue&type=template&id=57de6506& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Checkout_vue_vue_type_template_id_57de6506___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Checkout_vue_vue_type_template_id_57de6506___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Checkout_vue_vue_type_template_id_57de6506___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Checkout.vue?vue&type=template&id=57de6506& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Checkout.vue?vue&type=template&id=57de6506&");
 
 
 /***/ }),
@@ -18348,7 +19142,7 @@ var render = function () {
                         },
                       },
                       [
-                        _c("form", { attrs: { action: "#", method: "post" } }, [
+                        _c("form", [
                           _c(
                             "div",
                             {
@@ -18417,17 +19211,33 @@ var render = function () {
                                     _c("input", {
                                       directives: [
                                         {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.password,
+                                          expression: "password",
+                                        },
+                                        {
                                           name: "validate",
                                           rawName: "v-validate",
                                           value: "required|min:6",
                                           expression: "'required|min:6'",
                                         },
                                       ],
+                                      ref: "password",
                                       staticClass: "form-confirm-number",
                                       attrs: {
-                                        type: "password",
                                         name: "password",
-                                        id: "password",
+                                        type: "password",
+                                        placeholder: "Password",
+                                      },
+                                      domProps: { value: _vm.password },
+                                      on: {
+                                        input: function ($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.password = $event.target.value
+                                        },
                                       },
                                     }),
                                     _vm._v(" "),
@@ -18459,6 +19269,12 @@ var render = function () {
                                     _c("input", {
                                       directives: [
                                         {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.re_password,
+                                          expression: "re_password",
+                                        },
+                                        {
                                           name: "validate",
                                           rawName: "v-validate",
                                           value: "required|confirmed:password",
@@ -18468,9 +19284,19 @@ var render = function () {
                                       ],
                                       staticClass: "form-confirm-number",
                                       attrs: {
+                                        name: "password_confirmation",
                                         type: "password",
-                                        name: "re_password",
-                                        id: "enterthepassword",
+                                        placeholder: "Password, Again",
+                                        "data-vv-as": "password",
+                                      },
+                                      domProps: { value: _vm.re_password },
+                                      on: {
+                                        input: function ($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.re_password = $event.target.value
+                                        },
                                       },
                                     }),
                                     _vm._v(" "),
@@ -18480,7 +19306,9 @@ var render = function () {
                                       [
                                         _vm._v(
                                           _vm._s(
-                                            _vm.errors.first("re_password")
+                                            _vm.errors.first(
+                                              "password_confirmation"
+                                            )
                                           )
                                         ),
                                       ]
@@ -18488,7 +19316,28 @@ var render = function () {
                                   ]
                                 ),
                                 _vm._v(" "),
-                                _vm._m(1),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "d-flex justify-content-center",
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "next",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.submitPassword()
+                                          },
+                                        },
+                                      },
+                                      [_vm._v("Xác nhận")]
+                                    ),
+                                  ]
+                                ),
                               ])
                             : _vm._e(),
                         ]),
@@ -18619,13 +19468,206 @@ var staticRenderFns = [
       ]
     )
   },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/email/RegisterDone.vue?vue&type=template&id=4b713b95&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/email/RegisterDone.vue?vue&type=template&id=4b713b95& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-lg" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "confirm-steps" }, [
+        _c(
+          "div",
+          {
+            staticClass: "confirm-steps-content d-flex justify-content-center",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "registration_steps d-flex justify-content-center align-items-center",
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "tab-content pt-5",
+                    attrs: { id: "myTabContent" },
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-confirm ",
+                        attrs: {
+                          role: "tabpanel",
+                          id: "step3",
+                          "aria-labelledby": "step3-tab",
+                        },
+                      },
+                      [
+                        _c("div", { staticClass: "complete" }, [
+                          _c("h3", { staticClass: "form-complete-title" }, [
+                            _vm._v("Hoàn Thành đăng ký"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "link-login text-decoration-none text-dark",
+                              attrs: { href: _vm.baseUrl("login") },
+                            },
+                            [_vm._v("Quay về trang đăng nhập")]
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]
+        ),
+      ]),
+    ]),
+  ])
+}
+var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex justify-content-center" }, [
-      _c("button", { staticClass: "next" }, [_vm._v("Xác nhận")]),
-    ])
+    return _c(
+      "ul",
+      {
+        staticClass: "nav nav-tabs justify-content-around w-100",
+        attrs: { id: "myTab", role: "tablist" },
+      },
+      [
+        _c(
+          "li",
+          {
+            staticClass: "nav-item flex-fill steps-number",
+            attrs: {
+              role: "presentation",
+              "data-bs-toggle": "tooltip",
+              "data-bs-placement": "top",
+            },
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass:
+                  "nav-link active rounded-circle me-3 d-flex align-items-center justify-content-center",
+                attrs: {
+                  href: "#step1",
+                  id: "step1-tab",
+                  "data-bs-toggle": "tab",
+                  role: "tab",
+                  "aria-controls": "step1",
+                  "aria-selected": "true",
+                },
+              },
+              [_c("i", { staticClass: "fas fa-folder-open" })]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "steps-text" }, [_vm._v("Xác minh email")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "steps-border" }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "nav-item flex-fill steps-number",
+            attrs: {
+              role: "presentation",
+              "data-bs-toggle": "tooltip",
+              "data-bs-placement": "top",
+            },
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass:
+                  "nav-link rounded-circle me-3 d-flex align-items-center justify-content-center",
+                attrs: {
+                  href: "#step2",
+                  id: "step2-tab",
+                  "data-bs-toggle": "tab",
+                  role: "tab",
+                  "aria-controls": "step2",
+                  "aria-selected": "false",
+                },
+              },
+              [_c("i", { staticClass: "fas fa-briefcase" })]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "steps-text" }, [_vm._v("Tạo mật khẩu")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "steps-border" }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "nav-item flex-fill steps-number",
+            attrs: {
+              role: "presentation",
+              "data-bs-toggle": "tooltip",
+              "data-bs-placement": "top",
+            },
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass:
+                  "nav-link rounded-circle d-flex align-items-center justify-content-center",
+                attrs: {
+                  href: "#step3",
+                  id: "step3-tab",
+                  "data-bs-toggle": "tab",
+                  "ata-bs-toggle": "tab",
+                  role: "tab",
+                  "aria-controls": "step3",
+                  "aria-selected": "false",
+                },
+              },
+              [_c("i", { staticClass: "fas fa-star" })]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "steps-text" }, [_vm._v("Hoàn thành")]),
+          ]
+        ),
+      ]
+    )
   },
 ]
 render._withStripped = true
@@ -18957,40 +19999,14 @@ var render = function () {
           "header__bottom bg-white d-flex d-flex justify-content-around align-items-center fixed-top",
       },
       [
-        _c("div", { staticClass: "header__bottom__logo" }, [
-          _c(
-            "a",
-            {
-              staticClass: "header__bottom__logo_link",
-              attrs: { href: _vm.baseUrl("") },
-            },
-            [
-              _c("img", {
-                staticClass: "logo",
-                attrs: { src: "frontend/images/logo.png", alt: "logo" },
-              }),
-            ]
-          ),
-        ]),
+        _vm._m(3),
         _vm._v(" "),
         _c("div", { staticClass: "header__bottom__list" }, [
           _c(
             "ul",
             { staticClass: "header__bottom__nav d-flex m-0" },
             [
-              _c("li", { staticClass: "header__bottom__menu list-unstyled" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "header__bottom__link text-decoration-none",
-                    attrs: { href: _vm.baseUrl("") },
-                  },
-                  [
-                    _c("span", { staticClass: "hot" }, [_vm._v("Hot")]),
-                    _vm._v("\n            Hàng\n            mới\n          "),
-                  ]
-                ),
-              ]),
+              _vm._m(4),
               _vm._v(" "),
               _vm._l(_vm.dataHeader, function (item, index) {
                 return _c("div", { key: index }, [
@@ -19038,13 +20054,127 @@ var render = function () {
                 ])
               }),
               _vm._v(" "),
-              _vm._m(3),
+              _vm._m(5),
             ],
             2
           ),
         ]),
         _vm._v(" "),
-        _vm._m(4),
+        _c("div", { staticClass: "header__bottom__cart__search d-flex" }, [
+          _c("div", { staticClass: "header__bottom__cart position-relative" }, [
+            _c("div", { staticClass: "cart" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart cart-search" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "cart__product" }, [
+                _c(
+                  "p",
+                  {
+                    staticClass:
+                      "d-flex pb-3 border-bottom cart__titile align-items-center",
+                  },
+                  [
+                    _vm._v("\n              Có\n              "),
+                    _c("span", { staticClass: "cart__number" }, [
+                      _vm._v(_vm._s(_vm.getCart.totalQty)),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "cart__product__color" }, [
+                      _vm._v(
+                        "\n                Sản\n                phẩm\n              "
+                      ),
+                    ]),
+                    _vm._v(" trong giỏ hàng\n            "),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "cart__show" },
+                  _vm._l(_vm.getCart.items, function (item, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "cart__list border-bottom mt-3 mb-3 pb-3",
+                      },
+                      [
+                        _c("div", { staticClass: "cart__photo pe-2" }, [
+                          _c("img", {
+                            staticClass: "photo",
+                            attrs: {
+                              src: _vm.formatImage(item.image),
+                              alt: "",
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cart__description" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "link__product",
+                              attrs: { href: "#" },
+                            },
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(item.name) +
+                                  "\n                  "
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "price" }, [
+                            _vm._v(
+                              _vm._s(item.qty) +
+                                " X " +
+                                _vm._s(_vm.formatPrice(item.price))
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "delete",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.deleteItemCart(index)
+                                },
+                              },
+                            },
+                            [_c("i", { staticClass: "fa fa-trash" })]
+                          ),
+                        ]),
+                      ]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "total" }, [
+                  _vm._v(
+                    "Tổng: " + _vm._s(_vm.formatPrice(_vm.getCart.totalPrice))
+                  ),
+                ]),
+                _vm._v(" "),
+                _vm.dataUser
+                  ? _c("div", { staticClass: "send__order" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { href: _vm.baseUrl("checkout") },
+                        },
+                        [_vm._v("Thanh toán giỏ hàng")]
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _vm._m(6),
+        ]),
       ]
     ),
   ])
@@ -19115,6 +20245,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "header__bottom__logo" }, [
+      _c(
+        "a",
+        { staticClass: "header__bottom__logo_link", attrs: { href: "" } },
+        [
+          _c("img", {
+            staticClass: "logo",
+            attrs: { src: "frontend/images/logo.png", alt: "logo" },
+          }),
+        ]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "header__bottom__menu list-unstyled" }, [
+      _c(
+        "a",
+        {
+          staticClass: "header__bottom__link text-decoration-none",
+          attrs: { href: "" },
+        },
+        [
+          _c("span", { staticClass: "hot" }, [_vm._v("Hot")]),
+          _vm._v("\n            Hàng\n            mới\n          "),
+        ]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "li",
       { staticClass: "header__bottom__menu list-unstyled ps-4" },
@@ -19137,77 +20302,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "header__bottom__cart__search d-flex" }, [
-      _c("div", { staticClass: "header__bottom__cart position-relative" }, [
-        _c("div", { staticClass: "cart" }, [
-          _c("i", { staticClass: "fa fa-shopping-cart cart-search" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "cart__product" }, [
-            _c(
-              "p",
-              {
-                staticClass:
-                  "d-flex pb-3 border-bottom cart__titile align-items-center",
-              },
-              [
-                _vm._v("\n              Có\n              "),
-                _c("span", { staticClass: "cart__number" }, [_vm._v("1")]),
-                _vm._v(" "),
-                _c("span", { staticClass: "cart__product__color" }, [
-                  _vm._v(
-                    "\n                Sản\n                phẩm\n              "
-                  ),
-                ]),
-                _vm._v(" trong giỏ hàng\n            "),
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "cart__show" }, [
-              _c(
-                "div",
-                { staticClass: "cart__list border-bottom mt-3 mb-3 pb-3" },
-                [
-                  _c("div", { staticClass: "cart__photo pe-2" }, [
-                    _c("img", {
-                      staticClass: "photo",
-                      attrs: {
-                        src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh_2_small-15391.png",
-                        alt: "",
-                      },
-                    }),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "cart__description" }, [
-                    _c(
-                      "a",
-                      { staticClass: "link__product", attrs: { href: "#" } },
-                      [
-                        _vm._v(
-                          "\n                    Áo Sơ Mi Oxford Tay Ngắn ASM017\n                    Màu\n                    Xanh ádfasdfasdfadsfasd fadksjfhajklsdfgkjadsdsf\n                  "
-                        ),
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "price" }, [_vm._v("1 X 245.000")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "delete" }, [
-                      _c("i", { staticClass: "fa fa-trash" }),
-                    ]),
-                  ]),
-                ]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "total" }, [_vm._v("Tổng: 245,000")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "send__order" }, [
-              _c("button", { staticClass: "btns" }, [_vm._v("Gửi đơn hàng")]),
-            ]),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "header__bottom__search position-relative" }, [
+    return _c(
+      "div",
+      { staticClass: "header__bottom__search position-relative" },
+      [
         _c("div", { staticClass: "search cart-search" }, [
           _c("i", { staticClass: "fa fa-search" }),
           _vm._v(" "),
@@ -19230,7 +20328,433 @@ var staticRenderFns = [
             ]
           ),
         ]),
-      ]),
+      ]
+    )
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/modal/DetailModal.vue?vue&type=template&id=31df60cd&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/components/modal/DetailModal.vue?vue&type=template&id=31df60cd& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "exampleModal",
+          tabindex: "-1",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true",
+          "aria-label": "Close",
+        },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "div",
+                { staticClass: "mockup-content m-0 m-auto d-flex p-2" },
+                [
+                  _c("div", { staticClass: "mockup__left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "carousel slide",
+                        attrs: {
+                          id: "carouselExampleIndicators",
+                          "data-bs-ride": "carousel",
+                        },
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "carousel-indicators m-0 p-0" },
+                          _vm._l(
+                            _vm.dataDetailModal.data_images,
+                            function (item, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  class: { active: index === 0 },
+                                  attrs: {
+                                    "data-bs-target":
+                                      "#carouselExampleIndicators",
+                                    "data-bs-slide-to": index,
+                                    "aria-current": "true",
+                                    "aria-label": "Slide " + (index + 1),
+                                  },
+                                },
+                                [
+                                  _c("img", {
+                                    staticClass: "img-chill",
+                                    attrs: {
+                                      src: _vm.formatImage(item.name),
+                                      alt: "",
+                                    },
+                                  }),
+                                ]
+                              )
+                            }
+                          ),
+                          0
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "carousel-inner" },
+                          _vm._l(
+                            _vm.dataDetailModal.data_images,
+                            function (item, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "carousel-item ",
+                                  class: { active: index === 0 },
+                                },
+                                [
+                                  _c("img", {
+                                    staticClass: "d-block carousel-img",
+                                    attrs: {
+                                      src: _vm.formatImage(item.name),
+                                      alt: "...",
+                                    },
+                                  }),
+                                ]
+                              )
+                            }
+                          ),
+                          0
+                        ),
+                        _vm._v(" "),
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _vm._m(1),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mockup__right ps-5" }, [
+                    _c("h3", { staticClass: "mockup__title" }, [
+                      _vm._v(_vm._s(_vm.dataDetailModal.name)),
+                    ]),
+                    _vm._v(" "),
+                    _vm.dataDetailModal.status_promotion == 0
+                      ? _c("div", { staticClass: "mockup_price" }, [
+                          _c("u", [_vm._v("Giá bán: ")]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "price__number" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm.formatPrice(_vm.dataDetailModal.price)
+                                ) +
+                                "\n                                "
+                            ),
+                          ]),
+                        ])
+                      : _c("div", { staticClass: "mockup_price" }, [
+                          _c("u", [_vm._v("Giá bán: ")]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "price__number" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm.formatPrice(_vm.dataDetailModal.promotion)
+                                ) +
+                                " (-" +
+                                _vm._s(_vm.dataDetailModal.percent_promotion) +
+                                "%)\n                                "
+                            ),
+                          ]),
+                        ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mockup__status" }, [
+                      _vm._v("tình trạng: còn hàng"),
+                    ]),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mockup__describe" }, [
+                      _c("ul", { staticClass: "nav-menus m-0 p-0" }, [
+                        _c(
+                          "li",
+                          { staticClass: "list-unstyled cart__description" },
+                          [_vm._v(_vm._s(_vm.dataDetailModal.description))]
+                        ),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mockup__oder" }, [
+                      _c("ul", { staticClass: "nav" }, [
+                        _c("li", { staticClass: "list-unstyled me-4" }, [
+                          _vm._v(
+                            "\n                                        Size*\n                                        "
+                          ),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.size_id,
+                                  expression: "size_id",
+                                },
+                              ],
+                              staticClass: "form-select",
+                              attrs: { "aria-label": "Default select example" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.size_id = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: { selected: "" },
+                                  domProps: { value: null },
+                                },
+                                [_vm._v("Open this select menu")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.dataDetailModal.data_sizes,
+                                function (item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id },
+                                    },
+                                    [_vm._v(_vm._s(item.name))]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("li", { staticClass: "list-unstyled me-4" }, [
+                          _vm._v(
+                            "\n                                        Màu *\n                                        "
+                          ),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.color_id,
+                                  expression: "color_id",
+                                },
+                              ],
+                              staticClass: "form-select",
+                              attrs: { "aria-label": "Default select example" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.color_id = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: { selected: "" },
+                                  domProps: { value: null },
+                                },
+                                [_vm._v("Open this select menu")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.dataDetailModal.data_colors,
+                                function (item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.id },
+                                    },
+                                    [_vm._v(_vm._s(item.name))]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mockup__buying d-flex" }, [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn text-danger text-center",
+                          attrs: {
+                            disabled:
+                              _vm.color_id == null || _vm.size_id == null,
+                          },
+                          on: { click: _vm.addMoreCart },
+                        },
+                        [
+                          _c("i", { staticClass: "fa fa-plus" }),
+                          _vm._v(
+                            " Thêm\n                                    vào\n                                    giỏ hàng"
+                          ),
+                        ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "detail w-100" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "detail-link d-block text-center text-decoration-none text-white w-100",
+                          attrs: {
+                            href: _vm.baseUrl(
+                              "detail/" + _vm.dataDetailModal.id
+                            ),
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "xem\n                                    chi tiết sản\n                                    phẩm"
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "carousel-control-prev",
+        attrs: {
+          type: "button",
+          "data-bs-target": "#carouselExampleIndicators",
+          "data-bs-slide": "prev",
+        },
+      },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "carousel-control-prev-icon",
+            attrs: { "aria-hidden": "true" },
+          },
+          [_c("i", { staticClass: "fa fa-angle-left" })]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "visually-hidden" }, [_vm._v("Previous")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "carousel-control-next",
+        attrs: {
+          type: "button",
+          "data-bs-target": "#carouselExampleIndicators",
+          "data-bs-slide": "next",
+        },
+      },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "carousel-control-next-icon",
+            attrs: { "aria-hidden": "true" },
+          },
+          [_c("i", { staticClass: "fa fa-angle-right" })]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "visually-hidden" }, [_vm._v("Next")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-danger text-center w-25" }, [
+      _c("i", { staticClass: "fa fa-shopping-cart" }),
+      _vm._v("\n                                    Đăng ký mua"),
     ])
   },
 ]
@@ -19754,6 +21278,595 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Checkout.vue?vue&type=template&id=57de6506&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Checkout.vue?vue&type=template&id=57de6506& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "content-cart ps-0 pe-0" }, [
+      _c(
+        "div",
+        { staticClass: "w-100 menu--title d-flex align-items-center" },
+        [
+          _c(
+            "ul",
+            { staticClass: "nav align-items-center ps-5 pe-5 ms-5 me-5" },
+            [
+              _c("li", { staticClass: "list-unstyled " }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "link--product text-uppercase text-decoration-none text-dark",
+                    attrs: { href: "#" },
+                  },
+                  [_vm._v("\n                    4MEN")]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-unstyled pe-1 ps-1" }, [
+                _vm._v("\n                /\n            "),
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "list-unstyled" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "link--product text-capitalize text-decoration-none text-dark",
+                    attrs: { href: "#" },
+                  },
+                  [_vm._v(" áo\n                    nam ")]
+                ),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "content-cart-detail" }, [
+        _c("form", { attrs: { action: "#", method: "post" } }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-6" }, [
+              _c("div", { staticClass: "contacts" }, [
+                _c("div", { staticClass: "delivery_contact_information" }, [
+                  _c("h1", { staticClass: "form-title" }, [
+                    _vm._v("Thông tin liên hệ giao hàng"),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "username-label pe-3 text-end col-lg-4",
+                          attrs: { for: "username" },
+                        },
+                        [
+                          _vm._v(
+                            "Họ và tên *\n                                    "
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "username box-input col-lg-8",
+                        attrs: {
+                          type: "text",
+                          name: "username",
+                          placeholder: "Họ và tên",
+                          id: "username",
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "email-label text-end col-lg-4",
+                          attrs: { for: "email" },
+                        },
+                        [
+                          _vm._v(
+                            "Email\n                                        *"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "email box-input col-lg-8",
+                        attrs: {
+                          type: "text",
+                          name: "email",
+                          placeholder: "Họ và tên",
+                          id: "email",
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass:
+                            "numberphone-label pe-3 text-end col-lg-4",
+                          attrs: { for: "numberphone" },
+                        },
+                        [
+                          _vm._v(
+                            "Số điện thoạt\n                                        *"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "numberphone box-input col-lg-8",
+                        attrs: {
+                          type: "text",
+                          name: "numberphone",
+                          placeholder: "Họ và tên",
+                          id: "numberphone",
+                        },
+                      }),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "delivery_contact_information" }, [
+                  _c("h1", { staticClass: "form-title" }, [
+                    _vm._v("Địa chỉ giao hàng"),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass:
+                            "city-province-label pe-3 text-end col-lg-4",
+                          attrs: { for: "city-province" },
+                        },
+                        [
+                          _vm._v(
+                            "Chọn tỉnh\n                                        thành phố * "
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          staticClass: "box-input col-lg-8",
+                          attrs: { "aria-label": "Default select example" },
+                        },
+                        [
+                          _c("option", { attrs: { selected: "" } }, [
+                            _vm._v("Open this select menu"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "1" } }, [
+                            _vm._v("One"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "2" } }, [
+                            _vm._v("Two"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "3" } }, [
+                            _vm._v("Three"),
+                          ]),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass:
+                            "city-province-label pe-3 text-end col-lg-4",
+                          attrs: { for: "city-province" },
+                        },
+                        [
+                          _vm._v(
+                            "Chọn quận\n                                        huyện * "
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          staticClass: "box-input col-lg-8",
+                          attrs: { "aria-label": "Default select example" },
+                        },
+                        [
+                          _c("option", { attrs: { selected: "" } }, [
+                            _vm._v("Open this select menu"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "1" } }, [
+                            _vm._v("One"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "2" } }, [
+                            _vm._v("Two"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "3" } }, [
+                            _vm._v("Three"),
+                          ]),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "wards-label pe-3 text-end col-lg-4",
+                          attrs: { for: "wards" },
+                        },
+                        [
+                          _vm._v(
+                            "Tên\n                                        phường xã *"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "wards col-lg-8 box-input",
+                        attrs: {
+                          type: "text",
+                          name: "wards",
+                          placeholder: "Họ và tên",
+                          id: "wards",
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass:
+                            "street-name-label pe-3 text-end col-lg-4",
+                          attrs: { for: "streetname" },
+                        },
+                        [
+                          _vm._v(
+                            "Số nhà tên\n                                        đường *"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "street-name col-lg-8 box-input",
+                        attrs: {
+                          type: "text",
+                          name: "streetname",
+                          placeholder: "Họ và tên",
+                          id: "streetname",
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group-conacts pt-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "note-label pe-3 text-end col-lg-4",
+                          attrs: { for: "note" },
+                        },
+                        [
+                          _vm._v(
+                            "Ghi chú\n                                        *"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        staticClass: "note col-lg-8",
+                        attrs: {
+                          name: "note",
+                          id: "note",
+                          cols: "20",
+                          rows: "1",
+                        },
+                      }),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6" }, [
+              _c("div", { staticClass: "cart-informations" }, [
+                _c("h1", { staticClass: "form-title" }, [
+                  _vm._v("Giỏ hàng của bạn"),
+                ]),
+                _vm._v(" "),
+                _c("table", { staticClass: "table" }, [
+                  _c("thead", [
+                    _c("tr", [
+                      _c(
+                        "th",
+                        {
+                          staticClass: "table-text text-center",
+                          attrs: { scope: "col" },
+                        },
+                        [_vm._v("Hình")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "table-text text-center",
+                          attrs: { scope: "col" },
+                        },
+                        [
+                          _vm._v(
+                            "Thông tin sản phẩm\n                                    "
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "table-text text-center",
+                          attrs: { scope: "col" },
+                        },
+                        [_vm._v("SL")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "table-text text-center",
+                          attrs: { scope: "col" },
+                        },
+                        [_vm._v("Đơn giá")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "table-text text-center",
+                          attrs: { scope: "col" },
+                        },
+                        [_vm._v("Tổng")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "table-text text-center",
+                          attrs: { scope: "col" },
+                        },
+                        [_vm._v("Xóa")]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("tbody", [
+                    _c("tr", [
+                      _c("th", { attrs: { rowspan: "2" } }, [
+                        _c("img", {
+                          staticClass: "img-cart",
+                          attrs: {
+                            src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh_2_small-15391.png",
+                            alt: "",
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "overflow-hidden" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "product-links",
+                            attrs: { href: "#" },
+                          },
+                          [
+                            _vm._v(
+                              "Áo Faded Ripped-Effect QJ044\n                                            Màu Xanh"
+                            ),
+                          ]
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center text-products" }, [
+                        _vm._v("1"),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center text-products" }, [
+                        _vm._v("525.000"),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center text-products" }, [
+                        _vm._v("525.000"),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center text-products" }, [
+                        _vm._v("525.000"),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c(
+                        "td",
+                        { staticClass: "text-size", attrs: { align: "right" } },
+                        [_vm._v("Size: 28")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "d-flex border-0",
+                          attrs: { colspan: "3" },
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "data-number number-wrapper" },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "apartfrom border-end",
+                                  attrs: { id: "apartfrom" },
+                                },
+                                [_vm._v("-")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-number btn-number",
+                                attrs: {
+                                  type: "number",
+                                  name: "number",
+                                  value: "1",
+                                  step: "1",
+                                  min: "1",
+                                  id: "form-number",
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "addfrom border-start",
+                                  attrs: { id: "addfrom" },
+                                },
+                                [_vm._v("+")]
+                              ),
+                            ]
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        { staticClass: "text-end", attrs: { colspan: "3" } },
+                        [
+                          _c("button", { staticClass: "btn-delete" }, [
+                            _vm._v("Xóa"),
+                          ]),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("tfoot", [
+                    _c("tr", [
+                      _c("td", { attrs: { colspan: "6" } }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn-home text-dark",
+                            staticStyle: { float: "right" },
+                            attrs: { href: "#" },
+                          },
+                          [_vm._v("Quay về")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "clr" }),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("h1", { staticClass: "form-title" }, [_vm._v("Tổng")]),
+                _vm._v(" "),
+                _c("table", { staticClass: "w-100 table" }, [
+                  _c("tbody", [
+                    _c("tr", [
+                      _c("td", { staticClass: "w-50 text-products" }, [
+                        _vm._v("Số tiền mua hàng"),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "w-50 text-products" }, [
+                        _vm._v("525,000"),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("td", { staticClass: "w-50 text-products" }, [
+                        _vm._v("Tổng trọng lượng sản phẩm:"),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "w-50 text-products" }, [
+                        _vm._v(" 620 Gram"),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("td", { staticClass: "w-75 text-end text-products" }, [
+                        _vm._v("Tổng tiền: "),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "w-25 text-products" }, [
+                        _vm._v("525,000"),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "btn-submit text-center mt-5" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger w-25 btn-to",
+                attrs: { type: "button" },
+              },
+              [_vm._v("Gửi đơn hàng")]
+            ),
+          ]),
+        ]),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Detail.vue?vue&type=template&id=f56a9270&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/frontends/pages/Detail.vue?vue&type=template&id=f56a9270& ***!
@@ -19868,7 +21981,7 @@ var render = function () {
               _c("div", { staticClass: "detail__product__price d-flex pt-3" }, [
                 _vm._m(1),
                 _vm._v(" "),
-                _vm.status_promotion == 0
+                _vm.dataDetail.status_promotion === 0
                   ? _c("div", { staticClass: "product__price__number ps-2" }, [
                       _vm._v(_vm._s(_vm.formatPrice(_vm.dataDetail.price))),
                     ])
@@ -19902,7 +22015,18 @@ var render = function () {
                   _vm._l(_vm.dataDetail.data_colors, function (item, index) {
                     return _c(
                       "button",
-                      { key: index, staticClass: "btn--choose me-3" },
+                      {
+                        key: index,
+                        staticClass: "btn--choose me-3",
+                        class: {
+                          "text-danger": item.id === _vm.dataAddCart.color_id,
+                        },
+                        on: {
+                          click: function ($event) {
+                            return _vm.chooseColor(item.id)
+                          },
+                        },
+                      },
                       [_vm._v(_vm._s(item.name))]
                     )
                   }),
@@ -19923,7 +22047,19 @@ var render = function () {
                       _vm._l(_vm.dataDetail.data_sizes, function (item, index) {
                         return _c(
                           "button",
-                          { key: index, staticClass: "btn--choose--size me-3" },
+                          {
+                            key: index,
+                            staticClass: "btn--choose--size me-3",
+                            class: {
+                              "text-danger":
+                                item.id === _vm.dataAddCart.size_id,
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.chooseSize(item.id)
+                              },
+                            },
+                          },
                           [_vm._v(_vm._s(item.name))]
                         )
                       }),
@@ -19931,21 +22067,89 @@ var render = function () {
                     ),
                   ]),
                   _vm._v(" "),
-                  _vm._m(2),
+                  _c("li", { staticClass: "list-unstyled mt-3 d-flex" }, [
+                    _vm._v(
+                      "\n                  Số lượng *\n                  "
+                    ),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.dataAddCart.quantity,
+                          expression: "dataAddCart.quantity",
+                        },
+                      ],
+                      attrs: {
+                        type: "number",
+                        name: "number",
+                        min: "1",
+                        max: _vm.dataDetail.quantity,
+                      },
+                      domProps: { value: _vm.dataAddCart.quantity },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.dataAddCart,
+                            "quantity",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                    _vm._v(" "),
+                    _vm.dataAddCart.quantity > _vm.dataDetail.quantity
+                      ? _c("span", { staticClass: "text-danger" }, [
+                          _vm._v("Sản phẩm hiện tại không đủ"),
+                        ])
+                      : _vm._e(),
+                  ]),
                 ]),
               ]),
               _vm._v(" "),
-              _vm._m(3),
+              _vm.dataDetail.quantity === 0
+                ? _c("div", { staticClass: "mockup__buying d-flex pt-5" }, [
+                    _c(
+                      "button",
+                      { staticClass: "btn btn-secondary text-center w-25" },
+                      [_vm._v("Hết hàng")]
+                    ),
+                  ])
+                : _c("div", { staticClass: "mockup__buying d-flex pt-5" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn text-danger text-center",
+                        attrs: {
+                          disabled:
+                            _vm.dataAddCart.color_id === null ||
+                            _vm.dataAddCart.size_id === null,
+                        },
+                        on: { click: _vm.addSubmitCart },
+                      },
+                      [
+                        _c("i", { staticClass: "fa fa-plus" }),
+                        _vm._v(
+                          "\n                Thêm\n                vào\n                giỏ hàng\n              "
+                        ),
+                      ]
+                    ),
+                  ]),
               _vm._v(" "),
-              _vm._m(4),
+              _vm._m(3),
             ]),
           ]),
         ]),
       ]),
       _vm._v(" "),
-      _vm._m(5),
+      _vm._m(4),
       _vm._v(" "),
-      _vm._m(6),
+      _vm._m(5),
     ]),
   ])
 }
@@ -20015,51 +22219,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "list-unstyled mt-3 d-flex" }, [
-      _vm._v("\n                  Số lượng *\n                  "),
-      _c("div", { staticClass: "data-number" }, [
-        _c(
-          "button",
-          { staticClass: "apartfrom border-end", attrs: { id: "apartfrom" } },
-          [_vm._v("-")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-number",
-          attrs: {
-            type: "number",
-            name: "number",
-            value: "1",
-            step: "1",
-            min: "1",
-            id: "form-number",
-          },
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "addfrom border-start", attrs: { id: "addfrom" } },
-          [_vm._v("+")]
-        ),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mockup__buying d-flex pt-5" }, [
-      _c("button", { staticClass: "btn btn-danger text-center w-25" }, [
-        _c("i", { staticClass: "fa fa-shopping-cart" }),
-        _vm._v("\n                Đăng ký mua\n              "),
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn text-danger text-center" }, [
-        _c("i", { staticClass: "fa fa-plus" }),
-        _vm._v(
-          " Thêm\n                vào\n                giỏ hàng\n              "
-        ),
-      ]),
+    return _c("button", { staticClass: "btn btn-danger text-center w-25" }, [
+      _c("i", { staticClass: "fa fa-shopping-cart" }),
+      _vm._v("\n                Đăng ký mua\n              "),
     ])
   },
   function () {
@@ -20086,536 +22248,624 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "hottest_fashion" }, [
-      _c("h1", { staticClass: "titile__fashios text-center pt-5 pb-3" }, [
-        _vm._v("thời trang bán chạy"),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "container text-center my-3" }, [
-        _c(
-          "div",
-          { staticClass: "row mx-auto my-auto justify-content-center" },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "carousel slide",
-                attrs: { id: "recipeCarousel", "data-bs-ride": "carousel" },
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "carousel-inner", attrs: { role: "listbox" } },
-                  [
-                    _c("div", { staticClass: "carousel-item active" }, [
-                      _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", { staticClass: "card border-0" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "product-item pt-2 pe-2 ms-2 me-2 mt-2",
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "product__img position-relative",
-                                },
-                                [
-                                  _c("img", {
-                                    staticClass: "product",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "product__cart position-absolute",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-shopping-cart",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "product__img__item mt-1 mb-1" },
-                                [
-                                  _c("img", {
-                                    staticClass: "product-items",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__title" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "link-title text-decoration-none text-dark",
-                                    attrs: { href: "#" },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__price" }, [
-                                _vm._v("245.000"),
-                              ]),
-                            ]
-                          ),
-                        ]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "carousel-item" }, [
-                      _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", { staticClass: "card border-0" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "product-item pt-2 pe-2 ms-2 me-2 mt-2",
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "product__img position-relative",
-                                },
-                                [
-                                  _c("img", {
-                                    staticClass: "product",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "product__cart position-absolute",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-shopping-cart",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "product__img__item mt-1 mb-1" },
-                                [
-                                  _c("img", {
-                                    staticClass: "product-items",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__title" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "link-title text-decoration-none text-dark",
-                                    attrs: { href: "#" },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__price" }, [
-                                _vm._v("245.000"),
-                              ]),
-                            ]
-                          ),
-                        ]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "carousel-item" }, [
-                      _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", { staticClass: "card border-0" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "product-item pt-2 pe-2 ms-2 me-2 mt-2",
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "product__img position-relative",
-                                },
-                                [
-                                  _c("img", {
-                                    staticClass: "product",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "product__cart position-absolute",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-shopping-cart",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "product__img__item mt-1 mb-1" },
-                                [
-                                  _c("img", {
-                                    staticClass: "product-items",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__title" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "link-title text-decoration-none text-dark",
-                                    attrs: { href: "#" },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__price" }, [
-                                _vm._v("245.000"),
-                              ]),
-                            ]
-                          ),
-                        ]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "carousel-item" }, [
-                      _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", { staticClass: "card border-0" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "product-item pt-2 pe-2 ms-2 me-2 mt-2",
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "product__img position-relative",
-                                },
-                                [
-                                  _c("img", {
-                                    staticClass: "product",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "product__cart position-absolute",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-shopping-cart",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "product__img__item mt-1 mb-1" },
-                                [
-                                  _c("img", {
-                                    staticClass: "product-items",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__title" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "link-title text-decoration-none text-dark",
-                                    attrs: { href: "#" },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__price" }, [
-                                _vm._v("245.000"),
-                              ]),
-                            ]
-                          ),
-                        ]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "carousel-item" }, [
-                      _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", { staticClass: "card border-0" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "product-item pt-2 pe-2 ms-2 me-2 mt-2",
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "product__img position-relative",
-                                },
-                                [
-                                  _c("img", {
-                                    staticClass: "product",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "product__cart position-absolute",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-shopping-cart",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "product__img__item mt-1 mb-1" },
-                                [
-                                  _c("img", {
-                                    staticClass: "product-items",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__title" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "link-title text-decoration-none text-dark",
-                                    attrs: { href: "#" },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__price" }, [
-                                _vm._v("245.000"),
-                              ]),
-                            ]
-                          ),
-                        ]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "carousel-item" }, [
-                      _c("div", { staticClass: "col-md-3" }, [
-                        _c("div", { staticClass: "card border-0" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "product-item pt-2 pe-2 ms-2 me-2 mt-2",
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "product__img position-relative",
-                                },
-                                [
-                                  _c("img", {
-                                    staticClass: "product",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "product__cart position-absolute",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-shopping-cart",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "product__img__item mt-1 mb-1" },
-                                [
-                                  _c("img", {
-                                    staticClass: "product-items",
-                                    attrs: {
-                                      src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
-                                      alt: "",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__title" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "link-title text-decoration-none text-dark",
-                                    attrs: { href: "#" },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "product__price" }, [
-                                _vm._v("245.000"),
-                              ]),
-                            ]
-                          ),
-                        ]),
-                      ]),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "carousel-control-prev bg-transparent w-aut",
-                    attrs: {
-                      href: "#recipeCarousel",
-                      role: "button",
-                      "data-bs-slide": "prev",
+    return _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "content" }, [
+          _c("div", { staticClass: "hottest_fashion" }, [
+            _c("h1", { staticClass: "titile__fashios text-center pt-5 pb-3" }, [
+              _vm._v("thời trang bán chạy"),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "container text-center my-3" }, [
+              _c(
+                "div",
+                { staticClass: "row mx-auto my-auto justify-content-center" },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "recipeCarousel",
+                        "data-bs-ride": "carousel",
+                      },
                     },
-                  },
-                  [
-                    _c("span", {
-                      staticClass: "carousel-control-prev-icon",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "carousel-control-next bg-transparent w-aut",
-                    attrs: {
-                      href: "#recipeCarousel",
-                      role: "button",
-                      "data-bs-slide": "next",
-                    },
-                  },
-                  [
-                    _c("span", {
-                      staticClass: "carousel-control-next-icon",
-                      attrs: { "aria-hidden": "true" },
-                    }),
-                  ]
-                ),
-              ]
-            ),
-          ]
-        ),
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "carousel-inner",
+                          attrs: { role: "listbox" },
+                        },
+                        [
+                          _c("div", { staticClass: "carousel-item active" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c("div", { staticClass: "card" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "product-item pt-2 pe-2 me-2 mt-2",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img position-relative",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "product__cart position-absolute",
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-shopping-cart",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img__item mt-1 mb-1",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product-items",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__title" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "link-title text-decoration-none text-dark",
+                                            attrs: { href: "#" },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Áo Sơ\n                                Mi Oxford Tay Ngắn ASM017 Màu Xanh\n                              "
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__price" },
+                                      [_vm._v("245.000")]
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "carousel-item" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c("div", { staticClass: "card" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "product-item pt-2 pe-2 me-2 mt-2",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img position-relative",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "product__cart position-absolute",
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-shopping-cart",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img__item mt-1 mb-1",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product-items",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__title" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "link-title text-decoration-none text-dark",
+                                            attrs: { href: "#" },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Áo Sơ\n                                Mi Oxford Tay Ngắn ASM017 Màu Xanh\n                              "
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__price" },
+                                      [_vm._v("245.000")]
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "carousel-item" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c("div", { staticClass: "card" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "product-item pt-2 pe-2 me-2 mt-2",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img position-relative",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "product__cart position-absolute",
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-shopping-cart",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img__item mt-1 mb-1",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product-items",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__title" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "link-title text-decoration-none text-dark",
+                                            attrs: { href: "#" },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Áo Sơ\n                                Mi Oxford Tay Ngắn ASM017 Màu Xanh\n                              "
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__price" },
+                                      [_vm._v("245.000")]
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "carousel-item" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c("div", { staticClass: "card" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "product-item pt-2 pe-2 me-2 mt-2",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img position-relative",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "product__cart position-absolute",
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-shopping-cart",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img__item mt-1 mb-1",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product-items",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__title" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "link-title text-decoration-none text-dark",
+                                            attrs: { href: "#" },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Áo Sơ\n                                Mi Oxford Tay Ngắn ASM017 Màu Xanh\n                              "
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__price" },
+                                      [_vm._v("245.000")]
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "carousel-item" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c("div", { staticClass: "card" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "product-item pt-2 pe-2 me-2 mt-2",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img position-relative",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "product__cart position-absolute",
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-shopping-cart",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img__item mt-1 mb-1",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product-items",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__title" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "link-title text-decoration-none text-dark",
+                                            attrs: { href: "#" },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Áo Sơ\n                                Mi Oxford Tay Ngắn ASM017 Màu Xanh\n                              "
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__price" },
+                                      [_vm._v("245.000")]
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "carousel-item" }, [
+                            _c("div", { staticClass: "col-md-3" }, [
+                              _c("div", { staticClass: "card" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "product-item pt-2 pe-2 me-2 mt-2",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img position-relative",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "product__cart position-absolute",
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-shopping-cart",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "product__img__item mt-1 mb-1",
+                                      },
+                                      [
+                                        _c("img", {
+                                          staticClass: "product-items",
+                                          attrs: {
+                                            src: "frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png",
+                                            alt: "",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__title" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "link-title text-decoration-none text-dark",
+                                            attrs: { href: "#" },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Áo Sơ\n                                Mi Oxford Tay Ngắn ASM017 Màu Xanh\n                              "
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "product__price" },
+                                      [_vm._v("245.000")]
+                                    ),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "carousel-control-prev bg-transparent w-aut",
+                          attrs: {
+                            href: "#recipeCarousel",
+                            role: "button",
+                            "data-bs-slide": "prev",
+                          },
+                        },
+                        [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "carousel-control-prev-icon",
+                              attrs: { "aria-hidden": "true" },
+                            },
+                            [_c("i", { staticClass: "fa fa-angle-left" })]
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "carousel-control-next bg-transparent w-aut",
+                          attrs: {
+                            href: "#recipeCarousel",
+                            role: "button",
+                            "data-bs-slide": "next",
+                          },
+                        },
+                        [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "carousel-control-next-icon",
+                              attrs: { "aria-hidden": "true" },
+                            },
+                            [_c("i", { staticClass: "fa fa-angle-right" })]
+                          ),
+                        ]
+                      ),
+                    ]
+                  ),
+                ]
+              ),
+            ]),
+          ]),
+        ]),
       ]),
     ])
   },
@@ -20890,829 +23140,573 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "content" }, [
-      _c("div", { staticClass: "hottest_fashion" }, [
-        _c("h1", { staticClass: "titile__fashios text-center pb-3" }, [
-          _vm._v("THỜI TRANG HOT NHẤT"),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-wrap justify-content-center" }, [
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-        ]),
-      ]),
+  return _c(
+    "div",
+    { staticClass: "content" },
+    [
+      _vm._m(0),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "content__banner d-flex justify-content-center align-items-start pt-4",
-        },
-        [
-          _c("div", { staticClass: "banner__left me-4" }, [
-            _c("img", {
-              staticClass: "img-res",
-              attrs: {
-                src: "frontend/images/slide-1-trang-chu-slide-1.jpg",
-                alt: "",
-              },
-            }),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "banner__center" }, [
-            _c("div", { staticClass: "banner__top" }, [
-              _c("img", {
-                staticClass: "img-top",
-                attrs: {
-                  src: "frontend/images/slide-2-trang-chu-slide-2.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "banner__bottom" }, [
-              _c("img", {
-                staticClass: "img-bottom",
-                attrs: {
-                  src: "frontend/images/slide-3-trang-chu-slide-3.jpg",
-                  alt: "",
-                },
-              }),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "banner__right ms-4" }, [
-            _c("img", {
-              staticClass: "img-right",
-              attrs: {
-                src: "frontend/images/slide-4-trang-chu-slide-4.jpg",
-                alt: "",
-              },
-            }),
-          ]),
-        ]
-      ),
+      _vm._m(1),
       _vm._v(" "),
       _c("div", { staticClass: "hottest_fashion" }, [
         _c("h1", { staticClass: "titile__fashios text-center pt-5 pb-3" }, [
           _vm._v("thời trang mới nhất"),
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-wrap justify-content-center" }, [
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
+        _c(
+          "div",
+          { staticClass: "d-flex flex-wrap justify-content-center" },
+          [
+            _vm._l(_vm.dataProductNew, function (item, index) {
+              return _c(
+                "div",
+                { key: index, staticClass: "product-item pt-2 pe-2 me-2 mt-2" },
+                [
+                  _c("div", { staticClass: "product__img position-relative" }, [
+                    _c("img", {
+                      staticClass: "product",
+                      attrs: { src: _vm.formatImage(item.image), alt: "" },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "product__cart position-absolute",
+                        attrs: {
+                          type: "button",
+                          "data-bs-toggle": "modal",
+                          "data-bs-target": "#exampleModal",
+                        },
+                        on: {
+                          click: function ($event) {
+                            return _vm.modalEditData(item)
+                          },
+                        },
+                      },
+                      [_c("i", { staticClass: "fa fa-shopping-cart" })]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+                    _c("img", {
+                      staticClass: "product-items",
+                      attrs: { src: _vm.formatImage(item.image), alt: "" },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "product__title" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "link-title text-decoration-none text-dark",
+                        attrs: { href: "#" },
+                      },
+                      [_vm._v(_vm._s(item.name))]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "product__price" }, [
+                    _vm._v(_vm._s(_vm.formatPrice(item.price))),
+                  ]),
+                ]
+              )
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
+            _c("div", { staticClass: "text-center w-100 pt-3 pb-3" }, [
               _c(
-                "a",
+                "button",
                 {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
+                  staticClass: "btn-see-more",
+                  on: {
+                    click: function ($event) {
+                      return _vm.getDataNew(8)
+                    },
+                  },
                 },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+                [_vm._v("\n                    Xem them\n                ")]
               ),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
-          ]),
-        ]),
+          ],
+          2
+        ),
       ]),
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
-      _c("div", { staticClass: "hottest_fashion" }, [
-        _c("h1", { staticClass: "titile__fashios text-center pt-5 pb-3" }, [
-          _vm._v("thời trang bán chạy"),
+      _vm._m(2),
+      _vm._v(" "),
+      _c("detail-modal", { attrs: { dataDetailModal: _vm.DataDetailModal } }),
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "hottest_fashion" }, [
+      _c("h1", { staticClass: "titile__fashios text-center pb-3" }, [
+        _vm._v("THỜI TRANG HOT NHẤT"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex flex-wrap justify-content-center" }, [
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "content__banner d-flex justify-content-center align-items-start pt-4",
+      },
+      [
+        _c("div", { staticClass: "banner__left me-4" }, [
+          _c("img", {
+            staticClass: "img-res",
+            attrs: {
+              src: "frontend/images/slide-1-trang-chu-slide-1.jpg",
+              alt: "",
+            },
+          }),
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-wrap justify-content-center" }, [
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        _c("div", { staticClass: "banner__center" }, [
+          _c("div", { staticClass: "banner__top" }, [
+            _c("img", {
+              staticClass: "img-top",
+              attrs: {
+                src: "frontend/images/slide-2-trang-chu-slide-2.png",
+                alt: "",
+              },
+            }),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
+          _c("div", { staticClass: "banner__bottom" }, [
+            _c("img", {
+              staticClass: "img-bottom",
+              attrs: {
+                src: "frontend/images/slide-3-trang-chu-slide-3.jpg",
+                alt: "",
+              },
+            }),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "banner__right ms-4" }, [
+          _c("img", {
+            staticClass: "img-right",
+            attrs: {
+              src: "frontend/images/slide-4-trang-chu-slide-4.jpg",
+              alt: "",
+            },
+          }),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "hottest_fashion" }, [
+      _c("h1", { staticClass: "titile__fashios text-center pt-5 pb-3" }, [
+        _vm._v("thời trang bán chạy"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex flex-wrap justify-content-center" }, [
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
-            _c("div", { staticClass: "product__img position-relative" }, [
-              _c("img", {
-                staticClass: "product",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "product__cart position-absolute" }, [
-                _c("i", { staticClass: "fa fa-shopping-cart" }),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
-              _c("img", {
-                staticClass: "product-items",
-                attrs: {
-                  src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__title" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "link-title text-decoration-none text-dark",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
           ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "product-item pt-2 pe-2 me-2 mt-2" }, [
+          _c("div", { staticClass: "product__img position-relative" }, [
+            _c("img", {
+              staticClass: "product",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "product__cart position-absolute" }, [
+              _c("i", { staticClass: "fa fa-shopping-cart" }),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__img__item mt-1 mb-1" }, [
+            _c("img", {
+              staticClass: "product-items",
+              attrs: {
+                src: "frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh-15391.png",
+                alt: "",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__title" }, [
+            _c(
+              "a",
+              {
+                staticClass: "link-title text-decoration-none text-dark",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Áo Sơ Mi Oxford Tay Ngắn ASM017 Màu Xanh")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product__price" }, [_vm._v("245.000")]),
         ]),
       ]),
     ])

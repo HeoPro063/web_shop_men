@@ -13,7 +13,6 @@
                             <th>*</th>
                             <th>Name</th>
                             <th>Color</th>
-                            <th>Total products using color</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -22,7 +21,6 @@
                             <td>{{stt(index)}}</td>
                             <td>{{item.name}} </td>
                             <td> <div class="p-2" :style="`background:${item.favcolor}`"></div> {{item.favcolor}} </td>
-                            <td>{{item.total_products}}</td>
                             <td>
                                 <a :href="baseUrl(`color/${item.id}/edit/`)" class="m-2">
                                     <i class="fa-solid fa-pen-to-square"></i>

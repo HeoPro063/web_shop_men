@@ -17,8 +17,17 @@ class HomeController extends Controller
     }
 
     public function index() {
-        
         return view('frontend.pages.home');
+    }
+
+    public function getDataNew(Request $request) {
+        $limit = $request->get('limit');
+        $dataNew = $this->product->getProductNews($limit);
+        return response()->json([
+            'status' => '200',
+            'message' => 'success',
+            'datas' => $dataNew
+        ]);
     }
 
 }

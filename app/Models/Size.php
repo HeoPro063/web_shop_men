@@ -11,7 +11,4 @@ class Size extends Model
 
     protected $fillable = ['name'];
 
-    public function Products() {
-        return $this->hasMany('App\Models\Product');
-    }
 }

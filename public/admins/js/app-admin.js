@@ -3597,8 +3597,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4375,8 +4373,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/config/httpStore */ "./resources/js/core/config/httpStore.js");
-//
-//
 //
 //
 //
@@ -43060,8 +43056,6 @@ var render = function () {
                       _vm._v(" " + _vm._s(item.favcolor) + " "),
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.total_products))]),
-                    _vm._v(" "),
                     _c("td", [
                       _c(
                         "a",
@@ -43183,8 +43177,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
         _c("th", [_vm._v("Color")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Total products using color")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")]),
       ]),
@@ -44089,8 +44081,6 @@ var render = function () {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.name) + " ")]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.total_products))]),
-                    _vm._v(" "),
                     _c("td", [
                       _c(
                         "a",
@@ -44210,8 +44200,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("*")]),
         _vm._v(" "),
         _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Products using")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")]),
       ]),

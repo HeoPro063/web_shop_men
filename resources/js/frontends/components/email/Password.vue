@@ -76,7 +76,7 @@
                 id="step2"
                 aria-labelledby="step2-tab"
               >
-                <form action="#" method="post">
+                <form>
                   <div class="back-register d-flex justify-content-between align-items-center">
                     <a  :href="baseUrl(`email/confirm?email=${emailUser}`)" class="link-back previous met-may-qua">&larr;</a>
                     <h2 v-if="checkaccountpassword" class="form-confirm-title text-center" style="padding-right: 159px">Tạo mật khẩu</h2>
@@ -86,18 +86,17 @@
                   <div v-if="checkaccountpassword" class="ps-5 pe-5">
                     <div class="form-group-confirm pb-5">
                       <label for="password" class="pb-3" >Mật Khẩu</label>
-                      <input type="password" name="password" v-validate="'required|min:6'" class="form-confirm-number" id="password" />
+                      <input v-model="password" v-validate="'required|min:6'" name="password" type="password"  class="form-confirm-number" placeholder="Password" ref="password">
                       <span class="text text-danger">{{ errors.first('password') }}</span>
 
                     </div>
                     <div class="form-group-confirm pb-5">
                       <label for="enterthepassword" class="pb-3" >Nhập Lại Mật Khẩu</label>
-                      <input type="password" name="re_password"  v-validate="'required|confirmed:password'" class="form-confirm-number" id="enterthepassword" />
-                      <span class="text text-danger">{{ errors.first('re_password') }}</span>
-
+                      <input  v-model="re_password" v-validate="'required|confirmed:password'" name="password_confirmation" type="password"  class="form-confirm-number" placeholder="Password, Again" data-vv-as="password">
+                      <span class="text text-danger">{{ errors.first('password_confirmation') }}</span>
                     </div>
                     <div class="d-flex justify-content-center">
-                      <button class="next">Xác nhận</button>
+                      <button type="button" @click="submitPassword()" class="next">Xác nhận</button>
                     </div>
                   </div>
                 </form>
@@ -132,7 +131,9 @@ export default {
       statusCheck: true,
       checkemail: true,
       token: null,
-      checkaccountpassword: true
+      checkaccountpassword: true,
+      password:null,
+      re_password: null
     }
   },
   methods: {
@@ -183,33 +184,27 @@ export default {
           });
 
     },
-    submitRegister() {
+    submitPassword() {
       let scop = this;
       let formData = {
         email: scop.emailUser,
-        token: scop.token
+        password: scop.password,
+        password_confirmation: scop.re_password,
       }
       scop.$validator.validate().then(valid => {
           if(valid) {
             httpStore
               .dispatch("post", {
-                  url: scop.baseUrl(`check-token`),
+                  url: scop.baseUrl(`register-password`),
                   data: formData
               })
               .then(response => {
                   if(response.status === 200) {
-                     scop.$toast.open({
-                          message: "Success",
-                          type: "success",
-                          duration: 2000,
-                          dismissible: true,
-                          position: "top"
-                      });
-                      window.location.href = scop.baseUrl(`email/password?email=${response.datas.email}`);
-                      
+                    this.$loading(true);
+                    window.location.href = scop.baseUrl(`register-done`);
                   }else{
                        scop.$toast.open({
-                          message: "Token not found",
+                          message: "Erro password",
                           type: "error",
                           duration: 2000,
                           dismissible: true,
@@ -260,7 +255,8 @@ export default {
               }).finally(() => {
                 this.$loading(false);
               });
-    }
+    },
+    
   }
 
 };

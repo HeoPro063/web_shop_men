@@ -4,6 +4,9 @@ namespace App\Providers;
 use View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Session;
+use App\Library\Cart;
+
 class ComposerServiceProvider extends ServiceProvider
 {
     /**
@@ -26,7 +29,10 @@ class ComposerServiceProvider extends ServiceProvider
         //
         View::composer(['frontend.include.header'], function ($view) {
             $user = Auth::check() ? Auth::user() : null;
-            $view->with('user', $user);
+            $oldCart = Session::has('cart') ? Session::get('cart'):null;
+            $cart = new Cart($oldCart);
+            $dataCart = $cart->getCart();
+            $view->with(['user'=> $user, 'dataCart' => $dataCart]);
         });
     }
 }

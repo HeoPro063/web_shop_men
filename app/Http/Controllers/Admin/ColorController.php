@@ -44,7 +44,6 @@ class ColorController extends Controller
             $dataColor[$key]['id'] = $item->id;
             $dataColor[$key]['name'] = $item->name;
             $dataColor[$key]['favcolor'] = $item->favcolor;
-            $dataColor[$key]['total_products'] = count($this->color->find($item->id)->Products()->get());
         }
         $datas = [
             'paginate' => $result,

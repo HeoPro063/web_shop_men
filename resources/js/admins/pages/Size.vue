@@ -12,7 +12,6 @@
                         <tr>
                             <th>*</th>
                             <th>Name</th>
-                            <th>Products using</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -20,7 +19,6 @@
                          <tr v-for="(item, index) in dataSizes" :key="index">
                             <td>{{stt(index)}}</td>
                             <td>{{item.name}} </td>
-                            <td>{{item.total_products}}</td>
                             <td>
                                 <a :href="baseUrl(`size/${item.id}/edit/`)" class="m-2">
                                     <i class="fa-solid fa-pen-to-square"></i>

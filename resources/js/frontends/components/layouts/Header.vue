@@ -53,19 +53,19 @@
           </ul>
         </div>
       </div>
-    </div> 
+    </div>
     <div
       class="header__bottom bg-white d-flex d-flex justify-content-around align-items-center fixed-top"
     >
       <div class="header__bottom__logo">
-        <a :href="baseUrl('')" class="header__bottom__logo_link">
+        <a href class="header__bottom__logo_link">
           <img src="frontend/images/logo.png" class="logo" alt="logo" />
         </a>
       </div>
       <div class="header__bottom__list">
         <ul class="header__bottom__nav d-flex m-0">
           <li class="header__bottom__menu list-unstyled">
-            <a :href="baseUrl('')" class="header__bottom__link text-decoration-none">
+            <a href class="header__bottom__link text-decoration-none">
               <span class="hot">Hot</span>
               Hàng
               mới
@@ -102,7 +102,7 @@
             <div class="cart__product">
               <p class="d-flex pb-3 border-bottom cart__titile align-items-center">
                 Có
-                <span class="cart__number">1</span>
+                <span class="cart__number">{{getCart.totalQty}}</span>
                 <span class="cart__product__color">
                   Sản
                   phẩm
@@ -110,30 +110,29 @@
               </p>
 
               <div class="cart__show">
-                <div class="cart__list border-bottom mt-3 mb-3 pb-3">
+                <div v-for="(item, index) in getCart.items" :key="index" class="cart__list border-bottom mt-3 mb-3 pb-3">
                   <div class="cart__photo pe-2">
                     <img
-                      src="frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh_2_small-15391.png"
+                      :src="formatImage(item.image)"
                       class="photo"
                       alt
                     />
                   </div>
                   <div class="cart__description">
                     <a href="#" class="link__product">
-                      Áo Sơ Mi Oxford Tay Ngắn ASM017
-                      Màu
-                      Xanh ádfasdfasdfadsfasd fadksjfhajklsdfgkjadsdsf
+                      {{item.name}}
                     </a>
-                    <p class="price">1 X 245.000</p>
-                    <div class="delete">
+                    <p class="price">{{item.qty}} X {{formatPrice(item.price)}}</p>
+                    <div @click="deleteItemCart(index)" class="delete">
                       <i class="fa fa-trash"></i>
                     </div>
                   </div>
                 </div>
+                
               </div>
-              <div class="total">Tổng: 245,000</div>
-              <div class="send__order">
-                <button class="btns">Gửi đơn hàng</button>
+              <div class="total">Tổng: {{formatPrice(getCart.totalPrice)}}</div>
+              <div v-if="dataUser" class="send__order">
+                <a :href="baseUrl('checkout')" class="btn btn-secondary">Thanh toán giỏ hàng</a>
               </div>
             </div>
           </div>
@@ -152,9 +151,18 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+import httpStore from "@core/config/httpStore";
+
 export default {
   props: {
-    user: Object
+    user: Object,
+    datacart: {
+      type: Object,
+      default: () => {
+        return [];
+      }
+    }
   },
   data() {
     return {
@@ -219,10 +227,54 @@ export default {
       ]
     };
   },
-  created() {},
+  computed: {
+    ...mapGetters(["getCart"])
+  },
+  created() {
+    this.updatedDataCartVx();
+  },
   methods: {
-    baseUrl(url) {
-      return window.location.href + url;
+    ...mapMutations(["UPDATE_DATA_CART"]),
+    formatImage(img) {
+      return `uploads/${img}`;
+    },
+    formatPrice(price) {
+      var formatter = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND"
+      });
+      return formatter.format(price);
+    },
+    updatedDataCartVx() {
+      this.UPDATE_DATA_CART(this.datacart);
+    },
+    deleteItemCart(index) {
+          httpStore
+            .dispatch("get", {
+              url: this.baseUrl(`get-delete-cart?id=${index}`),
+              data: this.dataAddCart
+            })
+            .then(response => {
+              this.UPDATE_DATA_CART(response.datas)
+                  scop.$toast.open({
+                  message: "Success",
+                  type: "success",
+                  duration: 2000,
+                  dismissible: true,
+                  position: "top"
+                });
+            })
+            .catch(error => {
+              this.$toast.open({
+                message: "Error",
+                type: "error",
+                duration: 2000,
+                dismissible: true,
+                position: "top"
+              });
+            }).finally(() => {
+              this.$loading(false);
+            });
     }
   }
 };

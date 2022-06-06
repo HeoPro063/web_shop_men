@@ -2,39 +2,57 @@
 
 namespace App\Library;
 use App\Models\Promotion;
+use App\Models\Product;
+use App\Models\Color;
+use App\Models\Size;
 class Cart
 {
-	public $items = null;
+	public $items = [];
 	public $totalQty = 0;
 	public $totalPrice = 0;
 	public function __construct($oldCart){
 		if($oldCart){
-			$this->items = $oldCart->items;
-			$this->totalQty = $oldCart->totalQty;
-			$this->totalPrice = $oldCart->totalPrice;
+			$this->items = $oldCart['items'];
+			$this->totalQty = $oldCart['totalQty'];
+			$this->totalPrice = $oldCart['totalPrice'];
 		}
 	}
 
-	public function add($item, $id, $qty){
+	public function add($product, $data, $qty){
 		$cart = [];
-		if($item->promotion_id){
-			$promotion = Promotion::find($item->promotion_id);
-			return $promotion->percent;
-			$cart = ['qty'=> $qty, 'price' => $item->price, 'item' => $item];
+		if($product->promotion_id && $data['status_promotion'] == 1){
+			$promotion = Promotion::find($product->promotion_id);
+			$percent= $promotion->percent;
+			$percent = $percent / 100;
+			$price_promotion = $percent * $product->price;
+			$promotion_pr =  $product->price - $price_promotion;
+			$cart = ['qty'=> $qty, 'price' => $promotion_pr, 'item' => $product, 'color_id' => $data['color_id'], 'size_id' => $data['size_id']];
 		}
 		else{
-			$cart = ['qty'=> $qty, 'price' => $item->price, 'item' => $item];
+			$cart = ['qty'=> $qty, 'price' => $product->price, 'item' => $product, 'color_id' => $data['color_id'], 'size_id' => $data['size_id']];
 		}
-
+		$id = $data['id'].''.$data['color_id'].''.$data['size_id'];
 		if($this->items){
 			if(array_key_exists($id, $this->items)){
-				$cart = $this->items[$id];
-				$cart['qty'] += $qty;
+				foreach($this->items as $item){
+					if($data['color_id'] == $item['color_id'] && $data['size_id'] == $item['size_id']) {
+						$cart = $this->items[$id];
+						$cart['qty'] += $qty;
+						$this->totalPrice -= $item['price'];
+					}
+				}
 			}
 		}
-
-		$cart['price'] = $cart['price'] * $cart['qty'];
-
+		if($product->promotion_id && $data['status_promotion'] == 1){
+			$promotion = Promotion::find($product->promotion_id);
+			$percent= $promotion->percent;
+			$percent = $percent / 100;
+			$price_promotion = $percent * $product->price;
+			$promotion_pr =  $product->price - $price_promotion;
+			$cart['price'] = $promotion_pr * $cart['qty'];
+		}else {
+			$cart['price'] = $product->price * $cart['qty'];
+		}
 		$this->items[$id] = $cart;
 		$this->totalQty += $qty;
 		$this->totalPrice += $cart['price'];
@@ -54,5 +72,38 @@ class Cart
 		$this->totalQty -= $this->items[$id]['qty'];
 		$this->totalPrice -= $this->items[$id]['price'];
 		unset($this->items[$id]);
+	}
+
+	public function getCart() {
+
+		$datas = [];
+		$datas['items'] = $this->items;
+		$datas['totalQty'] = $this->totalQty;
+		$datas['totalPrice'] = $this->totalPrice;
+
+		$datas['status'] = 1;
+		foreach($this->items as $key => $value) {
+			$product = Product::find($value['item']['id']);
+			if($product) {
+				$datas['items'][$key]['name'] = $product->name;
+				$imagesProduct = $product->ImageProducts()->get();
+			   	$datas['items'][$key]['image'] = $imagesProduct[0]->name;
+				$color = Color::find($value['color_id']);
+				$datas['items'][$key]['color'] = $color->name;
+				$size = Size::find($value['size_id']);
+				$datas['items'][$key]['size'] = $size->name;
+			}else{
+				$datas['status'] = 0;
+			}
+		}
+		return  $datas;
+	}
+
+	public function getCartBase() {
+		return [
+			'items' => $this->items,
+			'totalQty' => $this->totalQty,
+			'totalPrice' => $this->totalPrice,
+		];
 	}
 }

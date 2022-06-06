@@ -41,7 +41,6 @@ class SizeController extends Controller
         foreach($result as $key => $item) {
             $dataSizes[$key]['id'] = $item->id;
             $dataSizes[$key]['name'] = $item->name;
-            $dataSizes[$key]['total_products'] = count($this->size->find($item->id)->Products()->get());
         }
         $datas = [
             'paginate' => $result,

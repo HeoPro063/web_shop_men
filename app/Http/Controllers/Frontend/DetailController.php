@@ -24,21 +24,39 @@ class DetailController extends Controller
         $this->image_product = $image_product;
     }
 
-    public function addInCart(Request $request, $id) {
-        $product = $this->product->find($id);
-        $oldCart = Session('cart') ? Session::get('cart'):null;
-        $cart = new Cart($oldCart);
-        $qty = $request->qty > 0 ? $request->qty : 1;
-        $cart->add($product, $id, $qty);
-        $request->session()->put('cart',$cart);
-        return redirect()->back();
-    }
-
     public function detail($id) {
+        // Session::forget('cart');
         $product = $this->product->find($id);
         $data_detail = $this->product->reposeDataDetail($product);
         return view('frontend.pages.detail', compact('data_detail'));
     }
 
+    public function postAddCart(Request $request) {
+        $oldCart = Session::has('cart') ? Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $product = $this->product->find($request->id);
+        $qty = $request->quantity > 0 ? $request->quantity : 1;
+        $cart->add($product, $request->all(), $qty);
+        $request->session()->put('cart', $cart->getCartBase());
+        return response()->json([
+            'datas' => $cart->getCart()
+        ]);
+    }
+
+    public function getDeleteCart(Request $request) {
+        $id = $request->get('id');
+        $oldCart = Session::has('cart') ? Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+        $CartBase = $cart->getCartBase();
+        if(count($CartBase['items']) > 0) {
+            Session::put('cart', $CartBase);
+        }else {
+            Session::forget('cart');
+        }
+        return response()->json([
+            'datas' => $cart->getCart()
+        ]);
+    }
     
 }
