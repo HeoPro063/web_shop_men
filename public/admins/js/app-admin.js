@@ -3445,12 +3445,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       dataCategories: [],
-      paginationData: []
+      paginationData: [],
+      searchText: ""
     };
   },
   created: function created() {
@@ -3526,6 +3540,39 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
+    },
+    searchTexts: function searchTexts() {
+      var _this4 = this;
+
+      var page = this.paginationData.current_page;
+      this.$loading(true);
+      var scop = this;
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: scop.baseUrl("category?search=".concat(scop.searchText, "&page=").concat(page))
+      }).then(function (response) {
+        if (response.status === 200) {
+          _this4.dataCategories = response.datas.categories;
+          _this4.paginationData = response.datas.paginate;
+        }
+
+        _this4.$toast.open({
+          message: 'Kết quả tìm kiếm',
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        _this4.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        _this4.$loading(false);
+      });
     }
   }
 });
@@ -3597,12 +3644,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       dataColors: [],
-      paginationData: []
+      paginationData: [],
+      searchText: ""
     };
   },
   methods: {
@@ -3674,6 +3735,39 @@ __webpack_require__.r(__webpack_exports__);
             Swal.fire('Erorr!', 'Can not delete because there are still products.', 'erorr');
           });
         }
+      });
+    },
+    searchTextsColor: function searchTextsColor() {
+      var _this4 = this;
+
+      var page = this.paginationData.current_page;
+      this.$loading(true);
+      var scop = this;
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: scop.baseUrl("color?search=".concat(scop.searchText, "&page=").concat(page))
+      }).then(function (response) {
+        if (response.status === 200) {
+          _this4.dataColors = response.datas.colors;
+          _this4.paginationData = response.datas.paginate;
+        }
+
+        _this4.$toast.open({
+          message: 'Màu đã tìm kiếm',
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        _this4.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        _this4.$loading(false);
       });
     }
   },
@@ -4090,13 +4184,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       dataPromotions: [],
-      paginationData: []
+      paginationData: [],
+      searchText: ""
     };
   },
   created: function created() {
@@ -4203,6 +4311,39 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         _this4.$loading(false);
       });
+    },
+    searchTextsPromotion: function searchTextsPromotion() {
+      var _this5 = this;
+
+      var page = this.paginationData.current_page;
+      this.$loading(true);
+      var scop = this;
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: scop.baseUrl("promotion?search=".concat(scop.searchText, "&page=").concat(page))
+      }).then(function (response) {
+        if (response.status === 200) {
+          _this5.dataPromotions = response.datas.promotions;
+          _this5.paginationData = response.datas.paginate;
+        }
+
+        _this5.$toast.open({
+          message: 'Khuyến mại đã tìm kiếm',
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        _this5.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        _this5.$loading(false);
+      });
     }
   }
 });
@@ -4274,12 +4415,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       dataRoles: [],
-      paginationData: []
+      paginationData: [],
+      searchText: ""
     };
   },
   methods: {
@@ -4351,6 +4506,39 @@ __webpack_require__.r(__webpack_exports__);
             Swal.fire('Erorr!', 'Can not delete because there are still products.', 'erorr');
           });
         }
+      });
+    },
+    searchTextsRole: function searchTextsRole() {
+      var _this4 = this;
+
+      var page = this.paginationData.current_page;
+      this.$loading(true);
+      var scop = this;
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: scop.baseUrl("role?search=".concat(scop.searchText, "&page=").concat(page))
+      }).then(function (response) {
+        if (response.status === 200) {
+          _this4.dataRoles = response.datas.roles;
+          _this4.paginationData = response.datas.paginate;
+        }
+
+        _this4.$toast.open({
+          message: 'Các phần quyền đã tìm kiếm',
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        _this4.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        _this4.$loading(false);
       });
     }
   },
@@ -4424,12 +4612,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       dataSizes: [],
-      paginationData: []
+      paginationData: [],
+      searchText: ""
     };
   },
   methods: {
@@ -4501,6 +4703,39 @@ __webpack_require__.r(__webpack_exports__);
             Swal.fire('Erorr!', 'Can not delete because there are still products.', 'erorr');
           });
         }
+      });
+    },
+    searchTextsSize: function searchTextsSize() {
+      var _this4 = this;
+
+      var page = this.paginationData.current_page;
+      this.$loading(true);
+      var scop = this;
+      _core_config_httpStore__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch("get", {
+        url: scop.baseUrl("size?search=".concat(scop.searchText, "&page=").concat(page))
+      }).then(function (response) {
+        if (response.status === 200) {
+          _this4.dataSizes = response.datas.sizes;
+          _this4.paginationData = response.datas.paginate;
+        }
+
+        _this4.$toast.open({
+          message: 'Kích thước đã tìm kiếm',
+          type: "success",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["catch"](function (error) {
+        _this4.$toast.open({
+          message: "Error",
+          type: "error",
+          duration: 2000,
+          dismissible: true,
+          position: "top"
+        });
+      })["finally"](function () {
+        _this4.$loading(false);
       });
     }
   },
@@ -42853,7 +43088,61 @@ var render = function () {
       _c("div", { staticClass: "row mt-3" }, [
         _c("div", { staticClass: "col-12 col-lg-12 col-xxl-12 d-flex" }, [
           _c("div", { staticClass: "card flex-fill" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-right" }, [
+                  _c("div", { staticClass: "mb-3" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "search-category" },
+                      },
+                      [_vm._v("Tìm kiếm")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchText,
+                            expression: "searchText",
+                          },
+                        ],
+                        staticClass: "form-control search",
+                        attrs: {
+                          type: "search",
+                          id: "search-category",
+                          placeholder: "Tìm kiếm",
+                        },
+                        domProps: { value: _vm.searchText },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchText = $event.target.value
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "search-btn",
+                          on: { click: _vm.searchTexts },
+                        },
+                        [_c("i", { staticClass: "fa fa-search" })]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover my-0" }, [
               _vm._m(1),
@@ -42978,7 +43267,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "card-left" }, [
       _c("h5", { staticClass: "card-title mb-0" }, [_vm._v("List Categories")]),
     ])
   },
@@ -43035,7 +43324,61 @@ var render = function () {
       _c("div", { staticClass: "row mt-3" }, [
         _c("div", { staticClass: "col-12 col-lg-12 col-xxl-12 d-flex" }, [
           _c("div", { staticClass: "card flex-fill" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-right" }, [
+                  _c("div", { staticClass: "mb-3" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "search-category" },
+                      },
+                      [_vm._v("Tìm kiếm")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchText,
+                            expression: "searchText",
+                          },
+                        ],
+                        staticClass: "form-control search",
+                        attrs: {
+                          type: "search",
+                          id: "search-category",
+                          placeholder: "Tìm kiếm",
+                        },
+                        domProps: { value: _vm.searchText },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchText = $event.target.value
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "search-btn",
+                          on: { click: _vm.searchTextsColor },
+                        },
+                        [_c("i", { staticClass: "fa fa-search" })]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover my-0" }, [
               _vm._m(1),
@@ -43162,7 +43505,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "card-left" }, [
       _c("h5", { staticClass: "card-title mb-0" }, [_vm._v("List Colors")]),
     ])
   },
@@ -43644,7 +43987,61 @@ var render = function () {
       _c("div", { staticClass: "row mt-3" }, [
         _c("div", { staticClass: "col-12 col-lg-12 col-xxl-12 d-flex" }, [
           _c("div", { staticClass: "card flex-fill" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-right" }, [
+                  _c("div", { staticClass: "mb-3" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "search-category" },
+                      },
+                      [_vm._v("Tìm kiếm")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchText,
+                            expression: "searchText",
+                          },
+                        ],
+                        staticClass: "form-control search",
+                        attrs: {
+                          type: "search",
+                          id: "search-category",
+                          placeholder: "Tìm kiếm",
+                        },
+                        domProps: { value: _vm.searchText },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchText = $event.target.value
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "search-btn",
+                          on: { click: _vm.searchTextsPromotion },
+                        },
+                        [_c("i", { staticClass: "fa fa-search" })]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover my-0" }, [
               _vm._m(1),
@@ -43823,7 +44220,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "card-left" }, [
       _c("h5", { staticClass: "card-title mb-0" }, [_vm._v("List Promotions")]),
     ])
   },
@@ -43890,7 +44287,61 @@ var render = function () {
       _c("div", { staticClass: "row mt-3" }, [
         _c("div", { staticClass: "col-12 col-lg-12 col-xxl-12 d-flex" }, [
           _c("div", { staticClass: "card flex-fill" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-right" }, [
+                  _c("div", { staticClass: "mb-3" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "search-category" },
+                      },
+                      [_vm._v("Tìm kiếm")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchText,
+                            expression: "searchText",
+                          },
+                        ],
+                        staticClass: "form-control search",
+                        attrs: {
+                          type: "search",
+                          id: "search-category",
+                          placeholder: "Tìm kiếm",
+                        },
+                        domProps: { value: _vm.searchText },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchText = $event.target.value
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "search-btn",
+                          on: { click: _vm.searchTextsRole },
+                        },
+                        [_c("i", { staticClass: "fa fa-search" })]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover my-0" }, [
               _vm._m(1),
@@ -43975,9 +44426,9 @@ var render = function () {
                             },
                             [
                               _vm._v(
-                                "\n                  " +
+                                "\r\n                        " +
                                   _vm._s(item.label) +
-                                  "\n                  "
+                                  "\r\n                    "
                               ),
                             ]
                           )
@@ -44011,7 +44462,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "card-left" }, [
       _c("h5", { staticClass: "card-title mb-0" }, [_vm._v("List Roles")]),
     ])
   },
@@ -44068,7 +44519,61 @@ var render = function () {
       _c("div", { staticClass: "row mt-3" }, [
         _c("div", { staticClass: "col-12 col-lg-12 col-xxl-12 d-flex" }, [
           _c("div", { staticClass: "card flex-fill" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-right" }, [
+                  _c("div", { staticClass: "mb-3" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "search-category" },
+                      },
+                      [_vm._v("Tìm kiếm")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchText,
+                            expression: "searchText",
+                          },
+                        ],
+                        staticClass: "form-control search",
+                        attrs: {
+                          type: "search",
+                          id: "search-category",
+                          placeholder: "Tìm kiếm",
+                        },
+                        domProps: { value: _vm.searchText },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchText = $event.target.value
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "search-btn",
+                          on: { click: _vm.searchTextsSize },
+                        },
+                        [_c("i", { staticClass: "fa fa-search" })]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover my-0" }, [
               _vm._m(1),
@@ -44187,7 +44692,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "card-left" }, [
       _c("h5", { staticClass: "card-title mb-0" }, [_vm._v("List Sizes")]),
     ])
   },

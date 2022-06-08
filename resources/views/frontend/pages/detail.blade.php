@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<detail :datadetail="{{json_encode($data_detail)}}"></detail>
+<detail :datadetail="{{json_encode($data_detail)}}" :productmore="{{json_encode($product_more)}}"></detail>
 @endsection
 
 @section('more-js')

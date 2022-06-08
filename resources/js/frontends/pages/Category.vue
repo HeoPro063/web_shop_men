@@ -33,16 +33,6 @@
                     </ul>
                     <ul class="nav-menu-chill m-0">
                         <li class="chill-item list-unstyled position-relative">
-                            Phân loại
-                            <i class="fa fa-angle-down"></i>
-                            <ul class="sub-menu position-absolute p-0">
-                                <li class="menu-item list-unstyled">Mua nhiều nhất</li>
-                                <li class="menu-item list-unstyled">Đánh tốt nhất</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav-menu-chill m-0">
-                        <li class="chill-item list-unstyled position-relative">
                             Lọc danh mục
                             <i class="fa fa-angle-down"></i>
                             <ul class="sub-menu position-absolute p-0" >
@@ -54,7 +44,7 @@
             </div>
             <div class="guys"></div>
             <div class="row">
-                <div class="col-md-9 col-sm-8 p-0">
+                <div class="col-md-12 col-sm-8 p-0">
                     <div class="d-flex flex-wrap">
                         <a style="text-decoration: none" v-for="(item, index) in datasDefault" :key="index" class="product-item" :href="baseUrl(`detail/${item.id}`)">
                             <div class="product__img position-relative image-more-block">
@@ -73,104 +63,6 @@
                             <div v-if="item.status_promotion == 0" class="product__price">{{formatNumber(item.price)}}</div>
                             <div v-else class="product__price">{{responPromotion(item.promotion, item.percent_promotion)}}</div>
                         </a>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-4 p-0">
-                    <div class="p-3 content-left">
-                        <form action="#" method="post" autocomplete="off">
-                            <h4 class="form--title">Tìm kiếm</h4>
-                            <div class="form--group">
-                                <label for="search" class="form--search">Sản phẩm tại 4 men</label>
-                                <input type="search" name="search" id="search" class="search-product"
-                                    placeholder="Từ khóa tìm kiếm">
-                            </div>
-                        </form>
-                        <div class="hot_products pt-5">
-                            <h4 class="form--title">Sản phẩm hot</h4>
-                            <div class="products-left d-flex pt-3">
-                                <div class="products-photo me-2">
-                                    <a href="#">
-                                        <img src="frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png"
-                                        class="img" alt="">
-                                    </a>
-                                </div>
-                                <div class="information">
-                                    <a href="#" class="information-link text-decoration-none text-dark">Quần Jeans Slimfit Faded
-                                        Ripped-Effect QJ044 Màu Xanh</a>
-                                    <div class="information-price">525.000</div>
-                                </div>
-                            </div>
-                            <div class="products-left d-flex pt-3">
-                                <div class="products-photo me-2">
-                                    <a href="#">
-                                        <img src="frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png"
-                                        class="img" alt="">
-                                    </a>
-                                </div>
-                                <div class="information">
-                                    <a href="#" class="information-link text-decoration-none text-dark">Quần Jeans Slimfit Faded
-                                        Ripped-Effect QJ044 Màu Xanh</a>
-                                    <div class="information-price">525.000</div>
-                                </div>
-                            </div>
-                            <div class="products-left d-flex pt-3">
-                                <div class="products-photo me-2">
-                                    <a href="#">
-                                        <img src="frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png"
-                                        class="img" alt="">
-                                    </a>
-                                </div>
-                                <div class="information">
-                                    <a href="#" class="information-link text-decoration-none text-dark">Quần Jeans Slimfit Faded
-                                        Ripped-Effect QJ044 Màu Xanh</a>
-                                    <div class="information-price">525.000</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-3 content-left">
-                        <div class="hot_products pt-5">
-                            <h4 class="form--title">Sản phẩm đã xem</h4>
-                            <div class="products-left d-flex pt-3">
-                                <div class="products-photo me-2">
-                                    <a href="#">
-                                        <img src="frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png"
-                                        class="img" alt="">
-                                    </a>
-                                </div>
-                                <div class="information">
-                                    <a href="#" class="information-link text-decoration-none text-dark">Quần Jeans Slimfit Faded
-                                        Ripped-Effect QJ044 Màu Xanh</a>
-                                    <div class="information-price">525.000</div>
-                                </div>
-                            </div>
-                            <div class="products-left d-flex pt-3">
-                                <div class="products-photo me-2">
-                                    <a href="#">
-                                        <img src="frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png"
-                                        class="img" alt="">
-                                    </a>
-                                </div>
-                                <div class="information">
-                                    <a href="#" class="information-link text-decoration-none text-dark">Quần Jeans Slimfit Faded
-                                        Ripped-Effect QJ044 Màu Xanh</a>
-                                    <div class="information-price">525.000</div>
-                                </div>
-                            </div>
-                            <div class="products-left d-flex pt-3">
-                                <div class="products-photo me-2">
-                                    <a href="#">
-                                        <img src="frontend/images/quan-tay-phoi-day-soc-qt023-mau-den-15964.png"
-                                        class="img" alt="">
-                                    </a>
-                                </div>
-                                <div class="information">
-                                    <a href="#" class="information-link text-decoration-none text-dark">Quần Jeans Slimfit Faded
-                                        Ripped-Effect QJ044 Màu Xanh</a>
-                                    <div class="information-price">525.000</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

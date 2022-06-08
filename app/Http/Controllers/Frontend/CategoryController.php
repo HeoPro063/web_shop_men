@@ -18,7 +18,7 @@ class CategoryController extends Controller
     }
 
     public function index(Request $request)  {
-        $data_default =  $this->product->getProductDefault($request);
+        $data_default =  $this->product->getProductDefault($request->all());
         $data_category = $this->category->getCategorySomeData();
         return view('frontend.pages.category', compact('data_default', 'data_category'));
     }

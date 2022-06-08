@@ -1,0 +1,9 @@
+.promotions {
+    margin-top: 64px;
+    padding: 20px 38px;
+}
+.promotions-top {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}

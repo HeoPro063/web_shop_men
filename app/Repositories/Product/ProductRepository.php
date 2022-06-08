@@ -3,6 +3,7 @@ namespace App\Repositories\Product;
 
 use App\Repositories\BaseRepository;
 use App\Models\Promotion;
+use App\Models\Category;
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
     //lấy model tương ứng
@@ -44,15 +45,20 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 }
             }
         }
-        return $query->paginate(3);
+        return $query->paginate(10);
     }
 
     public function getProductHot() {
         
     }
 
-    public function getProductDefault() {
-        $products = $this->model->orderBy('purchases', 'DESC')->get();
+    public function getProductDefault($request = []) {
+        $products = [];
+        if(isset($request['category_home_id'])) {
+            $products = Category::find($request['category_home_id'])->Products()->orderBy('purchases', 'DESC')->get();
+        }else{
+            $products = $this->model->orderBy('purchases', 'DESC')->get();
+        }
         return $this->responDataGet($products);
     }
 
@@ -70,6 +76,28 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
         $products = $query->get();
         return $this->responDataGet($products);
+    }
+
+    public function getMoreProduct($products) {
+        $name_product =  $products->name;
+        $array_name =  explode(' ', $name_product);
+        $datas = [];
+        if(count($array_name) > 1) {
+            $pr1 = $array_name[0].' '.$array_name[1];
+            $data1 = $this->model->where('products.name', 'like', '%'.$pr1.'%')->get();
+            $datas = $this->responDataGet($data1);
+        }
+       
+        $datas2 = [];
+        if(count($datas) < 5) {
+            $pr2 = $array_name[0];
+            foreach($datas as $dat) {
+                $data2 = $this->model->where('products.name', 'like', '%'.$pr2.'%')->where('id', '<>', $dat['id'])->get();
+                $datas2 =  $this->responDataGet($data2);
+            }
+        }
+        $dataall = array_merge($datas,$datas2);
+        return $dataall;
     }
 
     public function responDataGet($products) {

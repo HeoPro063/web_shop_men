@@ -1,11 +1,24 @@
 <template>
-  <div class="container-fluid" style="height:627px; overflow-x: hidden;
+<div class="container-fluid" style="height:627px; overflow-x: hidden;
     display: block;">
-      <div class="row mt-3">
+    <div class="row mt-3">
         <div class="col-12 col-lg-12 col-xxl-12 d-flex">
             <div class="card flex-fill">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">List Roles</h5>
+                   <div class="d-flex justify-content-between">
+                        <div class="card-left">
+                            <h5 class="card-title mb-0">List Roles</h5>
+                        </div>
+                        <div class="card-right">
+                            <div class="mb-3">
+                                <label for="search-category" class="form-label">Tìm kiếm</label>
+                                <div class="d-flex">
+                                    <input type="search" class="form-control search" v-model="searchText" id="search-category" placeholder="Tìm kiếm">
+                                    <button class="search-btn" @click="searchTextsRole"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <table class="table table-hover my-0">
                     <thead>
@@ -17,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                         <tr v-for="(item, index) in dataRoles" :key="index">
+                        <tr v-for="(item, index) in dataRoles" :key="index">
                             <td>{{stt(index)}}</td>
                             <td>{{item.name}} </td>
                             <td>{{item.total_user}}</td>
@@ -34,21 +47,21 @@
                 </table>
             </div>
         </div>
-      </div>
-      <div class="row mt-3">
-          <div class="col-12">
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
             <div class="pagination d-flex justify-content-end" v-if="paginationData.links">
-                <a @click="linkRole(paginationData.prev_page_url)">&laquo;</a>   
+                <a @click="linkRole(paginationData.prev_page_url)">&laquo;</a>
                 <div v-for="(item, index) in paginationData.links" :key="index">
                     <a v-if="index != 0 && index < paginationData.links.length - 1" :class="{'active' : item.active}" @click="linkRole(item.url)" class="btn btn-secondary" style="color: #fff">
-                    {{item.label}}
+                        {{item.label}}
                     </a>
                 </div>
-                <a @click="linkRole(paginationData.next_page_url)" class="disabled">&raquo;</a> 
+                <a @click="linkRole(paginationData.next_page_url)" class="disabled">&raquo;</a>
             </div>
-          </div>
-      </div>
-  </div>
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
@@ -59,6 +72,7 @@ export default {
         return {
             dataRoles: [],
             paginationData: [],
+            searchText: ""
         }
     },
     methods: {
@@ -69,10 +83,10 @@ export default {
             let scop = this
             httpStore
                 .dispatch("get", {
-                url: scop.baseUrl('role'),
+                    url: scop.baseUrl('role'),
                 })
                 .then(response => {
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                         this.dataRoles = response.datas.roles;
                         this.paginationData = response.datas.paginate;
                     }
@@ -88,10 +102,10 @@ export default {
                 });
         },
         linkRole(url) {
-            if(url != null) {
+            if (url != null) {
                 httpStore
                     .dispatch("get", {
-                    url: url,
+                        url: url,
                     })
                     .then(response => {
                         this.dataRoles = response.datas.roles;
@@ -109,40 +123,75 @@ export default {
             }
         },
         deleteRole(id) {
-                Swal.fire({
-                    title: 'Delete?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if(result.value) {
+            Swal.fire({
+                title: 'Delete?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
                     let scop = this
-                        httpStore
-                            .dispatch("delete", {
-                                url: scop.baseUrl(`role/${id}`),
-                            })
-                            .then(response => {
-                                this.getRole();
-                                Swal.fire(
+                    httpStore
+                        .dispatch("delete", {
+                            url: scop.baseUrl(`role/${id}`),
+                        })
+                        .then(response => {
+                            this.getRole();
+                            Swal.fire(
                                 'Deleted!',
                                 'Your file has been deleted.',
                                 'success'
-                                )
-                            })
-                            .catch(error => {
-                                Swal.fire(
+                            )
+                        })
+                        .catch(error => {
+                            Swal.fire(
                                 'Erorr!',
                                 'Can not delete because there are still products.',
                                 'erorr'
-                                )
-                            });
-                        
-                    }
+                            )
+                        });
+
+                }
+            })
+        },
+        searchTextsRole() {
+            let page = this.paginationData.current_page
+
+            this.$loading(true);
+            let scop = this
+            httpStore
+                .dispatch("get", {
+                    url: scop.baseUrl(`role?search=${scop.searchText}&page=${page}`),
                 })
-        }
+                .then(response => {
+                    if (response.status === 200) {
+                        this.dataRoles = response.datas.roles;
+                        this.paginationData = response.datas.paginate;
+                    }
+                    this.$toast.open({
+                        message: 'Các phần quyền đã tìm kiếm',
+                        type: "success",
+                        duration: 2000,
+                        dismissible: true,
+                        position: "top"
+                    });
+                })
+                .catch(error => {
+                    this.$toast.open({
+                        message: "Error",
+                        type: "error",
+                        duration: 2000,
+                        dismissible: true,
+                        position: "top"
+                    });
+                })
+                .finally(() => {
+                    this.$loading(false);
+                });
+        },
     },
     created() {
         this.getRole();

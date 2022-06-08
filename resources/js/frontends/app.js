@@ -16,11 +16,16 @@ Vue.component('category', require('@/frontends/pages/Category.vue').default);
 Vue.component('detail', require('@/frontends/pages/Detail.vue').default);
 Vue.component('register', require('@/frontends/pages/Register.vue').default);
 Vue.component('checkout', require('@/frontends/pages/Checkout.vue').default);
+Vue.component('promotion', require('@/frontends/pages/Promotion.vue').default);
 
 
 Vue.component('confirm', require('@/frontends/components/email/Confirm.vue').default);
 Vue.component('password', require('@/frontends/components/email/Password.vue').default);
 Vue.component('register-done', require('@/frontends/components/email/RegisterDone.vue').default);
+
+Vue.component('info-user', require('@/frontends/components/user/Info.vue').default);
+Vue.component('address-user', require('@/frontends/components/user/Address.vue').default);
+Vue.component('order-user', require('@/frontends/components/user/Order.vue').default);
 
 Vue.use(DatePicker);
 Vue.use(VeeValidate);

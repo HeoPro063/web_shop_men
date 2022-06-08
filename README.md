@@ -8,3 +8,4 @@ php artisan schedule:work
  nếu active = 1 đã được xác thực
  nếu active = 2 đã được tạo mật khẩu và sửa dụng
 
+

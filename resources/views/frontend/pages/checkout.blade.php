@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <checkout></checkout>
+    <checkout :address="{{json_encode($address)}}" :datacart="{{json_encode($dataCart)}}" :datavt="{{json_encode($dataVt)}}"></checkout>
 @endsection
 
 @section('more-js')

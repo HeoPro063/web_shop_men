@@ -1,0 +1,211 @@
+.info-content{
+    background: #f5f5fa;
+    height: 100vh;
+}
+.show-name-img {
+    width: 250px;
+    height: 45px;
+}
+img.photo-show {
+    width: 44px;
+}
+.info-menu {
+    display: block !important;
+}
+.info-account {
+    padding-left: 17px;
+    font-size: 13px;
+    text-transform: capitalize;
+    opacity: .8;
+}
+.info-name {
+    padding-left: 16px;
+    text-transform: capitalize;
+    font-size: 15px;
+}
+label.upaload-file {
+    background: #cccccc94;
+    padding: 8px 27px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+.file-avatar{
+    opacity: 0;
+    visibility: hidden;
+}
+.show-avatar {
+    width: 445px;
+    height: 445px;
+    border: 1px solid transparent;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+img.img-show-avatar {
+  object-fit: cover;
+}
+li.info-list {
+    padding: 10px 0;
+    height: 70px;
+    line-height: 31px;
+}
+.link-info-individual{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 8px 18px;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(74, 74, 74) !important;
+    border: none !important;
+}
+.link-info-individual:hover{
+    color: rgb(74, 74, 74);
+}
+.link-info-individual svg{
+    width: 24px;
+    height: 24px;
+    margin: 0px 22px 0px 0px;
+    font-size: 24px;
+    color: rgb(155, 155, 155);
+}
+.active{
+    /* background-color: rgb(235, 235, 240) !important; */
+    color: rgb(0, 0, 0) !important;
+}
+p.tabs-title {
+    font-size: 20px;
+    line-height: 32px;
+    font-weight: 300;
+    margin: 4px 0px 12px;
+}
+.pages-content-info{
+    padding: 25px;
+}
+img.info-avartar {
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+}
+.info-name-edit {
+    width: 274px;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+select.form-select {
+    width: 120px !important;
+}
+.gender {
+    display: block;
+    margin-right: 10px;
+    width: 20px;
+    height: 18px;
+}
+.email {
+    width: 435px;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+button.btn-update {
+    width: 145px;
+    height: 43px;
+    border: none;
+    border-radius: 5px;
+}
+.add-address {
+    height: 55px;
+    border: 1px dashed #ccc;
+    color: rgb(11, 116, 229);
+    font-size: 17px;
+}
+
+.modal.fade .modal-dialog {
+    transition: transform .3s ease-out;
+    transform: translate(0,-50px);
+    max-width: 50rem;
+}
+.add-address-name {
+    width: 50%;
+    height: 40px;
+    padding: 7px 15px;
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: 5px;
+}
+label.add-address-city {
+    padding-right: 36px;
+}
+label.add-address-wards {
+    padding-right: 38px;
+}
+label.add-address-specifically {
+    padding-right: 64px;
+}
+select.form-select {
+    /* width: 50% !important; */
+}
+.outlined{
+    padding: 15px;
+    outline: none;
+}
+.show-add-name {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 15px;
+}
+span.show-add-default {
+    font-size: 12px;
+    color: rgb(38, 188, 78);
+    display: inline-block;
+    margin-left: 32px;
+    font-weight: 500;
+}
+span.show-add-default svg {
+    margin-bottom: 3px;
+}
+.specifically{
+    color:#000;
+}
+.specifically span{
+    color:rgb(120, 120, 120);
+}
+.edit-address {
+    display: flex;
+    flex-direction: column;
+}
+li.nav-item {
+
+    text-align: center;
+}
+.nav-tabs .nav-link {
+    padding: 10px 20px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.status {
+    color: #36ce36;
+    font-weight: 600;
+}
+img.goods-photo {
+    width: 80px;
+    object-fit: cover;
+}
+.btn-price {
+    border: none;
+    outline: none;
+    padding: 5px 15px;
+    margin-right: 12px;
+    border-radius: 5px;
+}
+.number-phones {
+    width: 121px;
+}
+.link--forgot-password {
+    border: none;
+    padding: 5px 15px;
+}

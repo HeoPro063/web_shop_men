@@ -9,7 +9,6 @@
 @endsection   
 @section('content')
 <div class="content-banner">
-
     <div class="content-form">
         <form action="{{route('post.login')}}" method="post" class="form-horizontal" autocomplete="off">
             @csrf

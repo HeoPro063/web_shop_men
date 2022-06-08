@@ -71,9 +71,6 @@
                                 </div>
                                 <hr />
                                 <div class="mockup__buying d-flex">
-                                    <button class="btn btn-danger text-center w-25"><i
-                                            class="fa fa-shopping-cart"></i>
-                                        Đăng ký mua</button>
                                     <button :disabled="color_id == null || size_id == null" @click="addMoreCart" class="btn text-danger text-center"><i class="fa fa-plus"></i> Thêm
                                         vào
                                         giỏ hàng</button>

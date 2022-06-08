@@ -28,7 +28,8 @@ class DetailController extends Controller
         // Session::forget('cart');
         $product = $this->product->find($id);
         $data_detail = $this->product->reposeDataDetail($product);
-        return view('frontend.pages.detail', compact('data_detail'));
+        $product_more =  $this->product->getMoreProduct($product);
+        return view('frontend.pages.detail', compact('data_detail', 'product_more'));
     }
 
     public function postAddCart(Request $request) {

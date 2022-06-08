@@ -5,7 +5,20 @@
         <div class="col-12 col-lg-12 col-xxl-12 d-flex">
             <div class="card flex-fill">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">List Sizes</h5>
+                    <div class="d-flex justify-content-between">
+                        <div class="card-left">
+                            <h5 class="card-title mb-0">List Sizes</h5>
+                        </div>
+                        <div class="card-right">
+                            <div class="mb-3">
+                                <label for="search-category" class="form-label">Tìm kiếm</label>
+                                <div class="d-flex">
+                                    <input type="search" class="form-control search" v-model="searchText" id="search-category" placeholder="Tìm kiếm">
+                                    <button class="search-btn" @click="searchTextsSize"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <table class="table table-hover my-0">
                     <thead>
@@ -57,6 +70,7 @@ export default {
         return {
             dataSizes: [],
             paginationData: [],
+            searchText: ""
         }
     },
     methods: {
@@ -140,7 +154,42 @@ export default {
                         
                     }
                 })
-        }
+        },
+        searchTextsSize() {
+            let page = this.paginationData.current_page
+
+            this.$loading(true);
+            let scop = this
+            httpStore
+                .dispatch("get", {
+                    url: scop.baseUrl(`size?search=${scop.searchText}&page=${page}`),
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        this.dataSizes = response.datas.sizes;
+                        this.paginationData = response.datas.paginate;
+                    }
+                    this.$toast.open({
+                        message: 'Kích thước đã tìm kiếm',
+                        type: "success",
+                        duration: 2000,
+                        dismissible: true,
+                        position: "top"
+                    });
+                })
+                .catch(error => {
+                    this.$toast.open({
+                        message: "Error",
+                        type: "error",
+                        duration: 2000,
+                        dismissible: true,
+                        position: "top"
+                    });
+                })
+                .finally(() => {
+                    this.$loading(false);
+                });
+        },
     },
     created() {
         this.getSize(1);

@@ -5,7 +5,20 @@
         <div class="col-12 col-lg-12 col-xxl-12 d-flex">
             <div class="card flex-fill">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">List Promotions</h5>
+                    <div class="d-flex justify-content-between">
+                        <div class="card-left">
+                            <h5 class="card-title mb-0">List Promotions</h5>
+                        </div>
+                        <div class="card-right">
+                            <div class="mb-3">
+                                <label for="search-category" class="form-label">Tìm kiếm</label>
+                                <div class="d-flex">
+                                    <input type="search" class="form-control search" v-model="searchText" id="search-category" placeholder="Tìm kiếm">
+                                    <button class="search-btn" @click="searchTextsPromotion"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <table class="table table-hover my-0">
                     <thead>
@@ -73,6 +86,7 @@ export default {
         return {
             dataPromotions: [],
             paginationData: [],
+            searchText: ""
         }
     },
     created() {
@@ -192,7 +206,42 @@ export default {
                         this.$loading(false);
                     });
 
-        }
+        },
+        searchTextsPromotion() {
+            let page = this.paginationData.current_page
+
+            this.$loading(true);
+            let scop = this
+            httpStore
+                .dispatch("get", {
+                    url: scop.baseUrl(`promotion?search=${scop.searchText}&page=${page}`),
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        this.dataPromotions = response.datas.promotions;
+                        this.paginationData = response.datas.paginate;
+                    }
+                    this.$toast.open({
+                        message: 'Khuyến mại đã tìm kiếm',
+                        type: "success",
+                        duration: 2000,
+                        dismissible: true,
+                        position: "top"
+                    });
+                })
+                .catch(error => {
+                    this.$toast.open({
+                        message: "Error",
+                        type: "error",
+                        duration: 2000,
+                        dismissible: true,
+                        position: "top"
+                    });
+                })
+                .finally(() => {
+                    this.$loading(false);
+                });
+        },
     }
 }
 </script>

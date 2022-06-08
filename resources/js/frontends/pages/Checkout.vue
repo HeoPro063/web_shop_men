@@ -16,7 +16,7 @@
         </ul>
     </div>
     <div class="content-cart-detail">
-        <form action="#" method="post">
+        <form>
             <div class="row">
                 <div class="col-6">
                     <div class="contacts">
@@ -29,15 +29,8 @@
                                     </label>
                                     <input type="text" name="username"
                                         class="username box-input col-lg-8" placeholder="Họ và tên"
+                                        v-model="formData.name"
                                         id="username">
-                                </div>
-                            </div>
-                            <div class="form-group-conacts pt-4">
-                                <div class="row">
-                                    <label for="email" class="email-label text-end col-lg-4">Email
-                                        *</label>
-                                    <input type="text" name="email" class="email box-input col-lg-8"
-                                        placeholder="Họ và tên" id="email">
                                 </div>
                             </div>
                             <div class="form-group-conacts pt-4">
@@ -47,6 +40,7 @@
                                         *</label>
                                     <input type="text" name="numberphone"
                                         class="numberphone box-input col-lg-8" placeholder="Họ và tên"
+                                        v-model="formData.phone"
                                         id="numberphone">
                                 </div>
                             </div>
@@ -59,11 +53,11 @@
                                         class="city-province-label pe-3 text-end col-lg-4">Chọn tỉnh
                                         thành phố * </label>
                                     <select class="box-input col-lg-8"
-                                        aria-label="Default select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        aria-label="Default select example"
+                                        v-model="formData.province_id"
+                                        @change="changeProvince"
+                                        >
+                                        <option v-for="(item, index) in fomrDatavt.province" :key="index" :value="item.id">{{item.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -73,11 +67,12 @@
                                         class="city-province-label pe-3 text-end col-lg-4">Chọn quận
                                         huyện * </label>
                                     <select class="box-input col-lg-8"
-                                        aria-label="Default select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        aria-label="Default select example"
+                                        v-model="formData.district_id"
+                                        :disabled="dataActive.district"
+                                        @change="changeDistricts"
+                                        >
+                                        <option v-for="(item, index) in fomrDatavt.district" :key="index" :value="item.id">{{item.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -85,8 +80,13 @@
                                 <div class="row">
                                     <label for="wards" class="wards-label pe-3 text-end col-lg-4">Tên
                                         phường xã *</label>
-                                    <input type="text" name="wards" class="wards col-lg-8 box-input"
-                                        placeholder="Họ và tên" id="wards">
+                                    <select class="box-input col-lg-8"
+                                        aria-label="Default select example"
+                                        v-model="formData.ward_id"
+                                        :disabled="dataActive.ward"
+                                        >
+                                        <option v-for="(item, index) in fomrDatavt.ward" :key="index" :value="item.id">{{item.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group-conacts pt-4">
@@ -96,6 +96,7 @@
                                         đường *</label>
                                     <input type="text" name="streetname"
                                         class="street-name col-lg-8 box-input" placeholder="Họ và tên"
+                                        v-model="formData.specific_address"
                                         id="streetname">
                                 </div>
                             </div>
@@ -104,6 +105,7 @@
                                     <label for="note" class="note-label pe-3 text-end col-lg-4">Ghi chú
                                         *</label>
                                     <textarea name="note" id="note" class="note col-lg-8" cols="20"
+                                    v-model="formData.node"
                                         rows="1"></textarea>
                                 </div>
                             </div>
@@ -120,64 +122,43 @@
                                     <th scope="col" class="table-text text-center">Thông tin sản phẩm
                                     </th>
                                     <th scope="col" class="table-text text-center">SL</th>
-                                    <th scope="col" class="table-text text-center">Đơn giá</th>
                                     <th scope="col" class="table-text text-center">Tổng</th>
                                     <th scope="col" class="table-text text-center">Xóa</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody v-for="(item, index) in datacart.items" :key="index">
                                 <tr>
                                     <th rowspan="2">
-                                        <img src="frontend/images/ao-so-mi-oxford-tay-ngan-asm017-mau-xanh_2_small-15391.png"
+                                        <img :src="formatImage(item.image)"
                                             class="img-cart" alt="">
                                     </th>
                                     <td class="overflow-hidden">
-                                        <a href="#" class="product-links">Áo Faded Ripped-Effect QJ044
-                                            Màu Xanh</a>
+                                        <a :href="`detail/${item.id}`" class="product-links">{{item.name}}</a>
                                     </td>
-                                    <td class="text-center text-products">1</td>
-                                    <td class="text-center text-products">525.000</td>
-                                    <td class="text-center text-products">525.000</td>
-                                    <td class="text-center text-products">525.000</td>
+                                    <td class="text-center text-products">{{item.qty}}</td>
+                                    <td class="text-center text-products">{{formatPrice(item.price)}}</td>
+                                    <td class="text-center text-products"></td>
 
                                 </tr>
                                 <tr>
-                                    <td align="right" class="text-size">Size: 28</td>
+                                    <td align="right" class="text-size">Size: {{item.size}}</td>
                                     <td colspan="3" class="d-flex border-0">
-                                        <div class="data-number number-wrapper">
-                                            <button class="apartfrom border-end" id="apartfrom">-</button>
-                                            <input type="number" name="number" value="1" class="form-number btn-number" step="1" min="1" id="form-number">
-                                            <button class="addfrom border-start" id="addfrom">+</button>
-                                        </div>
                                     </td>
                                     <td colspan="3" class="text-end">
-                                        <button class="btn-delete">Xóa</button>
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="6"> <a class="btn-home text-dark" style="float:right;"
-                                            href="#">Quay về</a>
-                                        <div class="clr"></div>
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                         <h1 class="form-title">Tổng</h1>
                         <table class="w-100 table">
                             <tbody>
                                 <tr>
                                     <td class="w-50 text-products">Số tiền mua hàng</td>
-                                    <td class="w-50 text-products">525,000</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-50 text-products">Tổng trọng lượng sản phẩm:</td>
-                                    <td class="w-50 text-products"> 620 Gram</td>
+                                    <td class="w-50 text-products">{{datacart.totalQty}}</td>
                                 </tr>
                                 <tr>
                                     <td class="w-75 text-end text-products">Tổng tiền: </td>
-                                    <td class="w-25 text-products">525,000</td>
+                                    <td class="w-25 text-products">{{formatPrice(datacart.totalPrice)}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -185,7 +166,7 @@
                 </div>
             </div>
             <div class="btn-submit text-center mt-5">
-                <button type="button" class="btn btn-danger w-25 btn-to">Gửi đơn hàng</button>
+                <button type="button" @click="submitCheckout" class="btn btn-danger w-25 btn-to">Gửi đơn hàng</button>
             </div>
 
         </form>
@@ -194,8 +175,152 @@
 </template>
 
 <script>
-export default {
+import httpStore from "@core/config/httpStore";
 
+export default {
+    props: {
+        address: {
+            type: Object,
+        },
+        datacart: {
+            type: Object,
+        },
+        datavt: {
+            type: Object,
+        }
+    },
+    data() {
+        return {
+            formData: {
+                name: null,
+                phone: null,
+                province_id: null,
+                district_id: null,
+                ward_id: null,
+                specific_address: null,
+                node: null,
+            },
+            fomrDatavt: {
+                province: [],
+                district: [],
+                ward: [],
+            },
+            dataActive: {
+                district: true,
+                ward: true,
+            }
+        }
+    },
+    created() {
+        this.formData = {
+            name: this.address.name,
+            phone: this.address.phone,
+            province_id: this.address.province_id,
+            district_id: this.address.districts_id,
+            ward_id: this.address.wards_id,
+            specific_address: this.address.specific_address,
+        }
+        this.fomrDatavt = {
+            province: this.datavt.province,
+            district: this.datavt.district,
+            ward: this.datavt.ward,
+        }
+    },
+    methods: {
+         changeProvince() {
+          if(this.formData.province_id !== null) {
+              httpStore
+                  .dispatch("get", {
+                      url: this.baseUrl(`my-profile/get-address-districts?province_id=${this.formData.province_id}`),
+                  })
+                  .then(response => {
+                        this.fomrDatavt.district = response.datas;
+                        this.dataActive.district = false;
+                  })
+                  .catch(error => {
+                      this.$toast.open({
+                          message: "Error",
+                          type: "error",
+                          duration: 2000,
+                          dismissible: true,
+                          position: "top"
+                      });
+                  }).finally(() => {
+                  });
+          }else{
+            this.fomrDatavt.district = [];
+            this.dataActive.district = true;
+          }
+        },
+        changeDistricts() {
+            if(this.formData.districts_id !== null) {
+              httpStore
+                  .dispatch("get", {
+                      url: this.baseUrl(`my-profile/get-address-wards?districts_id=${this.formData.district_id}`),
+                  })
+                  .then(response => {
+                        this.fomrDatavt.ward = response.datas;
+                        this.dataActive.ward = false;
+                  })
+                  .catch(error => {
+                      this.$toast.open({
+                          message: "Error",
+                          type: "error",
+                          duration: 2000,
+                          dismissible: true,
+                          position: "top"
+                      });
+                  }).finally(() => {
+                  });
+          }else{
+            this.fomrDatavt.ward = [];
+            this.dataActive.ward = true;
+          }
+        },
+          formatImage(img) {
+            return `uploads/${img}`;
+        },
+        formatPrice(price) {
+            var formatter = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND"
+            });
+            return formatter.format(price);
+        },
+        submitCheckout() {
+            let dataform = {
+                name : this.formData.name,
+                phone : this.formData.phone,
+                province_id : this.formData.province_id,
+                district_id : this.formData.district_id,
+                ward_id : this.formData.ward_id,
+                specific_address : this.formData.specific_address,
+                node : this.formData.node,
+                carts : this.datacart,
+            }
+
+             httpStore
+                  .dispatch("post", {
+                      url: this.baseUrl(`my-profile/post-checkout`),
+                      data: dataform
+                  })
+                  .then(response => {
+                      if(response.status === 200) {
+                            window.location.href = this.baseUrl(`/`);
+                      }
+                  })
+                  .catch(error => {
+                      this.$toast.open({
+                          message: "Error",
+                          type: "error",
+                          duration: 2000,
+                          dismissible: true,
+                          position: "top"
+                      });
+                  }).finally(() => {
+                  });
+        }
+    }
 }
 </script>
 

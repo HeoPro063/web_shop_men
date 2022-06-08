@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
         for ($i=0; $i < 50; $i++) { 
             //
             $product = new Product();
-            $product->category_id = rand(21, 30);
+            $product->category_id = rand(1, 10);
             $product->name = Str::random(15);
             $product->price = rand(10000, 10000000);
             $product->quantity = rand(100, 1000);

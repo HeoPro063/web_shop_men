@@ -1,0 +1,1 @@
+<address-user :datauser="{{json_encode($user)}}"></address-user>

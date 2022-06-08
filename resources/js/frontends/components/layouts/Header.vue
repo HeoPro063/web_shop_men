@@ -16,7 +16,7 @@
               <a href="#" class="sub__link text-decoration-none">
                 <div class="login">
                   <a
-                    :href="baseUrl('user/my-profile')"
+                    :href="baseUrl('my-profile')"
                     class="login__link text-white text-decoration-none"
                   >
                     <i class="fa fa-user"></i> Tài khoản
@@ -47,9 +47,6 @@
             <li class="sub__menu__chill list-unstyled me-4 border-end">
               <a href="#" class="sub__link text-decoration-none">Chính sách khách vip</a>
             </li>
-            <li class="sub__menu__chill list-unstyled me-4 border-end">
-              <a href="#" class="sub__link text-decoration-none">Giới thiệu</a>
-            </li>
           </ul>
         </div>
       </div>
@@ -71,26 +68,37 @@
               mới
             </a>
           </li>
-          <div v-for="(item, index)  in dataHeader" :key="index">
+          <div>
             <li class="header__bottom__menu list-unstyled ps-4">
-              <a class="header__bottom__link text-decoration-none">{{item.titleCategory}}</a>
+              <a class="header__bottom__link text-decoration-none">Danh mục</a>
               <ul class="header__bottom__sub__menu p-0">
                 <li
-                  v-for="(item2, index2) in item.dataCategory"
+                  v-for="(item2, index2) in dataHeader"
                   :key="index2"
                   class="menu__chill list-unstyled border-bottom"
                 >
-                  <a href="#" class="link__chill text-decoration-none">{{item2.name}}</a>
+                  <a :href="`category?category_home_id=${item2.id}`" class="link__chill text-decoration-none">{{item2.name}}</a>
                 </li>
               </ul>
             </li>
           </div>
 
           <li class="header__bottom__menu list-unstyled ps-4">
-            <a href="#" class="header__bottom__link text-decoration-none">
+            <a :href="baseUrl('promotion')" class="header__bottom__link text-decoration-none">
               <span class="hot">Hot</span>
               Khuyến
               mãi
+            </a>
+          </li>
+
+           <li class="header__bottom__menu list-unstyled ps-4">
+            <a v-if="dataUser" href="checkout" class="header__bottom__link text-decoration-none">
+              Giỏ hàng
+            </a>
+          </li>
+          <li class="header__bottom__menu list-unstyled ps-4">
+            <a href="about" class="header__bottom__link text-decoration-none">
+              Giới thiệu
             </a>
           </li>
         </ul>
@@ -119,7 +127,7 @@
                     />
                   </div>
                   <div class="cart__description">
-                    <a href="#" class="link__product">
+                    <a :href="`detail/${item.item.id}`" class="link__product">
                       {{item.name}}
                     </a>
                     <p class="price">{{item.qty}} X {{formatPrice(item.price)}}</p>
@@ -167,64 +175,7 @@ export default {
   data() {
     return {
       dataUser: this.user,
-      dataHeader: [
-        {
-          titleCategory: "QUẦN NAM",
-          dataCategory: [
-            {
-              name: "Quần da"
-            },
-            {
-              name: "Quần jei"
-            },
-            {
-              name: "Quần bò"
-            }
-          ]
-        },
-        {
-          titleCategory: "ÁO NAM",
-          dataCategory: [
-            {
-              name: "Quần da"
-            },
-            {
-              name: "Quần jei"
-            },
-            {
-              name: "Quần bò"
-            }
-          ]
-        },
-        {
-          titleCategory: "PHỤ KIỆN",
-          dataCategory: [
-            {
-              name: "Quần da"
-            },
-            {
-              name: "Quần jei"
-            },
-            {
-              name: "Quần bò"
-            }
-          ]
-        },
-        {
-          titleCategory: "GIÀY DÉP",
-          dataCategory: [
-            {
-              name: "Quần da"
-            },
-            {
-              name: "Quần jei"
-            },
-            {
-              name: "Quần bò"
-            }
-          ]
-        }
-      ]
+      dataHeader: []
     };
   },
   computed: {
@@ -232,6 +183,7 @@ export default {
   },
   created() {
     this.updatedDataCartVx();
+    this.getDataHeader();
   },
   methods: {
     ...mapMutations(["UPDATE_DATA_CART"]),
@@ -275,6 +227,19 @@ export default {
             }).finally(() => {
               this.$loading(false);
             });
+    },
+    getDataHeader() {
+      httpStore
+        .dispatch("get", {
+        url: this.baseUrl("get-data-header"),
+        })
+        .then(response => {
+          this.dataHeader = response.datas
+        })
+        .catch(error => {
+      
+        }).finally(() => {
+        });
     }
   }
 };

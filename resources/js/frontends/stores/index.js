@@ -6,16 +6,23 @@ import { http } from '@core/config/http';
 
 const store = new Vuex.Store({
     state: {
-        dataCart: []
+        dataCart: [],
+        dataUser: [],
     },
     getters: {
         getCart(state) {
             return state.dataCart;
         },
+        getUser(state) {
+            return state.dataUser;
+        },
     },
     mutations: {
         UPDATE_DATA_CART(state, payload) {
             state.dataCart = payload;
+        },
+        UPDATE_DATA_USER(state, payload) {
+            state.dataUser = payload;
         },
     },
     actions: {},

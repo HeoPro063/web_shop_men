@@ -11,11 +11,13 @@ interface ProductRepositoryInterface extends RepositoryInterface
 
     public function getProductHot();
 
-    public function getProductDefault();
+    public function getProductDefault($request = []);
 
     public function getProductSearch($request = []);
 
     public function reposeDataDetail($product = []);
 
     public function getProductNews($limit);
+
+    public function getMoreProduct($products);
 }
